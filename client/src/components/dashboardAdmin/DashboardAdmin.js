@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import logoutUser from "../../actions/logoutAction";
@@ -14,13 +15,15 @@ class Dashboard extends Component {
       <div>
         <HeaderImg/>       
         <div className="row">
-          <div className="col s12 center-align">
+        <div className="col s12 center-align">
             <h4>
-              <b>Hey there,</b> {user.name.split(" ")[0]}
+              <b>Hello, </b> {user.name.split(" ")[0]}
               <p className="flow-text grey-text text-darken-1">
-                You are logged into a full-stack{" "}
-                <span style={{ fontFamily: "monospace" }}>MERN</span> app 👏
+                Thank you for signing in to COURSEBEE. We are continuously working to make this place better.
+                <br/><br/>If you want to join our team send us a message in our 
+                <Link to="https://www.facebook.com/coursebee.live">facebook page</Link>.
               </p>
+              
             </h4>
             <button
               style={{
@@ -30,7 +33,7 @@ class Dashboard extends Component {
                 marginTop: "1rem"
               }}
               onClick={this.onLogoutClick}
-              className="btn btn-large waves-effect waves-light hoverable blue accent-3"
+              className="btn btn-large waves-effect waves-light hoverable teal darken-1"
             >
               Logout
             </button>
