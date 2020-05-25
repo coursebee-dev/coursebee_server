@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import HeaderImg from "../layout/HeaderImg"
 
-class Landing extends Component {
+class LandingMentor extends Component {
   componentDidMount() {
     // If logged in and user navigates to Register page, should redirect them to dashboard
     if (this.props.auth.isAuthenticated) {
@@ -65,7 +65,7 @@ class Landing extends Component {
     );
   }
 }
-Landing.propTypes = {
+LandingMentor.propTypes = {
   auth: PropTypes.object.isRequired,
 };
 const mapStateToProps = state => ({
@@ -73,4 +73,4 @@ const mapStateToProps = state => ({
 });
 export default connect(
   mapStateToProps
-)(Landing);
+)(LandingMentor);

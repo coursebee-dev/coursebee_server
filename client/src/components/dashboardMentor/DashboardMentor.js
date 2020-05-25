@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import logoutUser from "../../actions/logoutAction";
 import HeaderImg from "../layout/HeaderImg"
-class Dashboard extends Component {
+class DashboardMentor extends Component {
   onLogoutClick = e => {
     e.preventDefault();
     this.props.history.push("/");
@@ -19,11 +18,10 @@ class Dashboard extends Component {
             <h4>
               <b>Hello, </b> {user.name.split(" ")[0]}
               <p className="flow-text grey-text text-darken-1">
-                Thank you for signing in to COURSEBEE. We are continuously working to make this place better.
-                <br/><br/>If you want to join our team send us a message in our 
-                <Link to="https://www.facebook.com/coursebee.live">facebook page</Link>.
+                Thank you for signing in to COURSEBEE. We are continuously working to make this a better platform.
+                <br/><br/>If you want to join our team send us a message in our{" "}
+                <a to="https://www.facebook.com/coursebee.live">facebook page</a>.
               </p>
-              
             </h4>
             <button
               style={{
@@ -44,7 +42,7 @@ class Dashboard extends Component {
   }
 }
 
-Dashboard.propTypes = {
+DashboardMentor.propTypes = {
   logoutUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -55,4 +53,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { logoutUser }
-)(Dashboard);
+)(DashboardMentor);

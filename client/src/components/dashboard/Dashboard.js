@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import  logoutUser  from "../../actions/logoutAction";
@@ -20,9 +19,9 @@ class Dashboard extends Component {
             <h4>
               <b>Hello, </b> {user.name.split(" ")[0]}
               <p className="flow-text grey-text text-darken-1">
-                Thank you for signing in to COURSEBEE. We are continuously working to make this place better.
+                Thank you for signing in to COURSEBEE. We are continuously working to make this a better platform.
                 <br/><br/>If you want to join our team send us a message in our 
-                <Link to="https://www.facebook.com/coursebee.live">facebook page</Link>.
+                <a to="https://www.facebook.com/coursebee.live">facebook page</a>.
               </p>
               
             </h4>
