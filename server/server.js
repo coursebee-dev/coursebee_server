@@ -12,6 +12,11 @@ require('./auth/auth');
 require('./auth/authAdmin');
 require('./auth/authMentor');
 
+
+if(process.env.NODE_ENV === 'production'){
+  app.use(express.static('../client/build'));
+} 
+
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
 app.use("/", students);
 app.use("/mentor", mentors);
