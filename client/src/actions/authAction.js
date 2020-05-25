@@ -11,8 +11,8 @@ import setCurrentUser from "./setUser";
 export const registerUser = (userData, history) => dispatch => {
     console.log(userData)
     axios
-        .post("/register", qs.stringify(userData))
-        .then(res => history.push("/login")) // re-direct to login on successful register
+        .post("https://coursebee-app-passport.herokuapp.com/register", qs.stringify(userData))
+        .then(res => history.push("https://coursebee-app-passport.herokuapp.com/login")) // re-direct to login on successful register
         .catch(err =>
             dispatch({
                 type: GET_ERRORS,
@@ -25,7 +25,7 @@ export const registerUser = (userData, history) => dispatch => {
 // Login - get user token
 export const loginUser = userData => dispatch => {
     axios
-        .post("/login", qs.stringify(userData))
+        .post("https://coursebee-app-passport.herokuapp.com/login", qs.stringify(userData))
         .then(res => {
             // Save to localStorage// Set token to localStorage
             const { token } = res.data;

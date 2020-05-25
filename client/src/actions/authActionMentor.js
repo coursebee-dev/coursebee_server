@@ -10,8 +10,8 @@ import setCurrentUser from "./setUser";
 // Register User
 export const registerMentor = (userData, history) => dispatch => {
     axios
-        .post("/mentor/register", qs.stringify(userData))
-        .then(res => history.push("/mentor/login")) // re-direct to login on successful register
+        .post("https://coursebee-app-passport.herokuapp.com/mentor/register", qs.stringify(userData))
+        .then(res => history.push("https://coursebee-app-passport.herokuapp.com/mentor/login")) // re-direct to login on successful register
         .catch(err =>
             dispatch({
                 type: GET_ERRORS,
@@ -24,7 +24,7 @@ export const registerMentor = (userData, history) => dispatch => {
 // Login - get user token
 export const loginMentor = userData => dispatch => {
     axios
-        .post("/mentor/login", qs.stringify(userData))
+        .post("https://coursebee-app-passport.herokuapp.com/mentor/login", qs.stringify(userData))
         .then(res => {
             // Save to localStorage// Set token to localStorage
             const { token } = res.data;
