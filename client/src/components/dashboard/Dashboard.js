@@ -20,7 +20,7 @@ class Dashboard extends Component {
               <b>Hello, </b> {user.name.split(" ")[0]}
               <p className="flow-text grey-text text-darken-1">
                 Thank you for signing in to COURSEBEE. We are continuously working to make this a better platform.
-                <br/><br/>If you want to join our team send us a message in our 
+                <br/><br/>If you want to join our team send us a message in our{" "}
                 <a to="https://www.facebook.com/coursebee.live">facebook page</a>.
               </p>
               
