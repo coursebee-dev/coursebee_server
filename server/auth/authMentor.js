@@ -23,7 +23,7 @@ passport.use('registerMentor', new localStrategy({
       error.msg ="Email already exists";
     }
     console.log(error.msg)
-    done({email:error.msg});
+    done(null , false, {email:error.msg});
   }
 }));
 

@@ -17,7 +17,7 @@ router.post('/register', async (req, res, next) => {
                 console.log(info)
                 return res.status(400).json(info)
             }
-            return res.json(req.user)
+            return res.json(user)
         } catch (error) {
             return next(error);
         }
