@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "install-client": "cd ../client && npm install",
+    "build": "cd ../client && npm run build",
+    "heroku-postbuild": "npm run install-client && npm run build",
     "start" : "cd server && npm run start"
   },
   "keywords": [],
