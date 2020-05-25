@@ -1,0 +1,11 @@
+{
+  "name": "coursebee_app_passport",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start" : "cd server && npm run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
