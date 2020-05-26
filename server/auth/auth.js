@@ -13,8 +13,10 @@ passport.use('register', new localStrategy({
   try {
     console.log(req.body);
     const name = req.body.name;
+    const institution = req.body.institution;
+    const subject = req.body.subject;
     //Save the information provided by the user to the the database
-    const user = await UserModel.create({ name, email, password });
+    const user = await UserModel.create({ name, email, password, institution, subject});
     //Send the user information to the next middleware
     return done(null, user);
   } catch (error) {

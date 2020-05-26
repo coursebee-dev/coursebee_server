@@ -9,12 +9,16 @@ passport.use('registerAdmin', new localStrategy({
   passwordField: 'password',
   passReqToCallback: true
 }, async (req, email, password, done) => {
-  console.log("In user");
+  console.log("In user")
   try {
-    console.log(req.body);
-    const name = req.body.name;
+    console.log(req.body)
+    const name = req.body.name
+    const mobileNo = req.body.mobileNo
+    const organization = req.body.organization
+    const position = req.body.position
+    const location = req.body.location
     //Save the information provided by the user to the the database
-    const user = await UserModel.create({ name, email, password });
+    const user = await UserModel.create({ name, email, password, mobileNo, organization, position, location });
     //Send the user information to the next middleware
     return done(null, user);
   } catch (error) {

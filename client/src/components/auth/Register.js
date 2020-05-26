@@ -12,6 +12,8 @@ class Register extends Component {
             email: "",
             password: "",
             password2: "",
+            institution: "",
+            subject: "",
             errors: {}
         };
     }
@@ -23,6 +25,7 @@ class Register extends Component {
         }
     }
     componentDidMount() {
+        window.scrollTo(0, 0)
         // If logged in and user navigates to Register page, should redirect them to dashboard
         if (this.props.auth.isAuthenticated) {
             if(this.props.auth.user.type === "student"){
@@ -44,6 +47,8 @@ class Register extends Component {
             email: this.state.email,
             password: this.state.password,
             password2: this.state.password2,
+            institution: this.state.institution,
+            subject: this.state.subject
         };
         console.log(JSON.stringify(newUser));
         this.props.registerUser(newUser, this.props.history);
@@ -123,6 +128,34 @@ class Register extends Component {
                                 />
                                 <label htmlFor="password2">Confirm Password</label>
                                 <span className="red-text">{errors.password}</span>
+                            </div>
+                            <div className="input-field col s12">
+                                <input
+                                    onChange={this.onChange}
+                                    value={this.state.institution}
+                                    error={errors.institution}
+                                    id="institution"
+                                    type="text"
+                                    className={classnames("", {
+                                        invalid: errors.institution
+                                    })}
+                                />
+                                <label htmlFor="institution">Institution</label>
+                                <span className="red-text">{errors.institution}</span>
+                            </div>
+                            <div className="input-field col s12">
+                                <input
+                                    onChange={this.onChange}
+                                    value={this.state.subject}
+                                    error={errors.subject}
+                                    id="subject"
+                                    type="text"
+                                    className={classnames("", {
+                                        invalid: errors.subject
+                                    })}
+                                />
+                                <label htmlFor="subject">Subject</label>
+                                <span className="red-text">{errors.subject}</span>
                             </div>
                             <div className="col s12" style={{ paddingLeft: "11.250px" }}>
                                 <button

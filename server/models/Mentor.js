@@ -17,6 +17,22 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  mobileNo: {
+    type: String,
+    required: true
+  },
+  organization: {
+    type: String,
+    required: true
+  },
+  position: {
+    type: String,
+    required: true
+  },
+  interests: {
+    type: String,
+    required: false
+  },
   date: {
     type: Date,
     default: Date.now

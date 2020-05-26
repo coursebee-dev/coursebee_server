@@ -12,6 +12,11 @@ class Register extends Component {
             email: "",
             password: "",
             password2: "",
+            mobileNo: "",
+            organization: "",
+            position: "",
+            location: "",
+            adminKey: "",
             errors: {}
         };
     }
@@ -23,6 +28,7 @@ class Register extends Component {
         }
     }
     componentDidMount() {
+        window.scrollTo(0, 0)
         // If logged in and user navigates to Register page, should redirect them to dashboard
         if (this.props.auth.isAuthenticated) {
             if(this.props.auth.user.type === "student"){
@@ -43,7 +49,12 @@ class Register extends Component {
             name: this.state.name,
             email: this.state.email,
             password: this.state.password,
-            password2: this.state.password2
+            password2: this.state.password2,
+            mobileNo: this.state.mobileNo,
+            organization: this.state.organization,
+            postion: this.state.position,
+            location: this.state.location,
+            adminKey: this.state.adminKey
         };
         console.log(JSON.stringify(newUser));
         this.props.registerAdmin(newUser, this.props.history);
@@ -123,6 +134,76 @@ class Register extends Component {
                                 />
                                 <label htmlFor="password2">Confirm Password</label>
                                 <span className="red-text">{errors.password}</span>
+                            </div>
+                            <div className="input-field col s12">
+                                <input
+                                    onChange={this.onChange}
+                                    value={this.state.mobileNo}
+                                    error={errors.mobileNo}
+                                    id="mobileNo"
+                                    type="text"
+                                    className={classnames("", {
+                                        invalid: errors.mobileNo
+                                    })}
+                                />
+                                <label htmlFor="mobileNo">Mobile No.</label>
+                                <span className="red-text">{errors.mobileNo}</span>
+                            </div>
+                            <div className="input-field col s12">
+                                <input
+                                    onChange={this.onChange}
+                                    value={this.state.organization}
+                                    error={errors.organization}
+                                    id="organization"
+                                    type="text"
+                                    className={classnames("", {
+                                        invalid: errors.organization
+                                    })}
+                                />
+                                <label htmlFor="organization">Organization</label>
+                                <span className="red-text">{errors.organization}</span>
+                            </div>
+                            <div className="input-field col s12">
+                                <input
+                                    onChange={this.onChange}
+                                    value={this.state.position}
+                                    error={errors.position}
+                                    id="position"
+                                    type="text"
+                                    className={classnames("", {
+                                        invalid: errors.position
+                                    })}
+                                />
+                                <label htmlFor="position">Position</label>
+                                <span className="red-text">{errors.position}</span>
+                            </div>
+                            <div className="input-field col s12">
+                                <input
+                                    onChange={this.onChange}
+                                    value={this.state.location}
+                                    error={errors.location}
+                                    id="location"
+                                    type="text"
+                                    className={classnames("", {
+                                        invalid: errors.location
+                                    })}
+                                />
+                                <label htmlFor="location">Location</label>
+                                <span className="red-text">{errors.location}</span>
+                            </div>
+                            <div className="input-field col s12">
+                                <input
+                                    onChange={this.onChange}
+                                    value={this.state.adminKey}
+                                    error={errors.adminKey}
+                                    id="adminKey"
+                                    type="password"
+                                    className={classnames("", {
+                                        invalid: errors.adminKey
+                                    })}
+                                />
+                                <label htmlFor="adminKey">Admin Key</label>
+                                <span className="red-text">{errors.adminKey}</span>
                             </div>
                             <div className="col s12" style={{ paddingLeft: "11.250px" }}>
                                 <button

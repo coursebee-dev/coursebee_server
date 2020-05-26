@@ -13,8 +13,12 @@ passport.use('registerMentor', new localStrategy({
   try {
     console.log(req.body);
     const name = req.body.name;
+    const mobileNo = req.body.mobileNo
+    const organization = req.body.organization
+    const position = req.body.position
+    const interests = req.body.interests
     //Save the information provided by the user to the the database
-    const user = await UserModel.create({ name, email, password });
+    const user = await UserModel.create({ name, email, password, mobileNo, organization, position, interests });
     //Send the user information to the next middleware
     return done(null, user);
   } catch (error) {

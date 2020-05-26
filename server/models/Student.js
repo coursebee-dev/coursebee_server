@@ -16,6 +16,14 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  institution: {
+    type: String,
+    required: true
+  },
+  subject: {
+    type: String,
+    required: true
+  },
   date: {
     type: Date,
     default: Date.now
