@@ -52,7 +52,7 @@ class Register extends Component {
             password2: this.state.password2,
             mobileNo: this.state.mobileNo,
             organization: this.state.organization,
-            postion: this.state.position,
+            position: this.state.position,
             location: this.state.location,
             adminKey: this.state.adminKey
         };

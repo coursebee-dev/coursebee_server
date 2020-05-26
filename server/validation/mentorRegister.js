@@ -31,14 +31,17 @@ module.exports = function validateRegisterInput(data) {
   if (!Validator.equals(data.password, data.password2)) {
     errors.password2 = "Passwords must match";
   }
-  if (Validator.isMobilePhone(data.mobileNo)) {
-    errors.mobileNo = "Email field is required";
+  if (Validator.isEmpty(data.mobileNo)) {
+    errors.mobileNo = "Mobile number field is required";
+  }
+  if (!/(^(\+88|0088)?(01){1}[3456789]{1}(\d){8})$/.test(data.mobileNo)) {
+    errors.mobileNo = "Mobile number is invalid";
   }
   if (Validator.isEmpty(data.organization)) {
     errors.organization = "Organization field is required";
   }
   if (Validator.isEmpty(data.position)) {
-    errors.position = "Postion field is required";
+    errors.position = "Position field is required";
   }
   return {
     errors,
