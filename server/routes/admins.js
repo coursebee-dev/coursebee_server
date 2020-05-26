@@ -42,7 +42,7 @@ router.post('/login', async (req, res, next) => {
                 //user password in the token so we pick only the email and id
                 console.log(user.id)
                 const payload = { id: user.id, name: user.name, type: "admin" };// Sign token
-                const token = jwt.sign(payload, process.env.secretOrKey, { expiresIn: 31556926 /* 1 year in seconds*/ });
+                const token = jwt.sign(payload, process.env.secretOrKey, { expiresIn: 2678400 /* 1 month in seconds*/ });
                 return res.json({ success: true, token: token });
             });
         } catch (error) {

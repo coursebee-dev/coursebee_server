@@ -42,7 +42,7 @@ class Navbar extends Component {
                                 <li>
                                     <Link className="teal darken-1" to="/mentor">
                                         Mentors Here!
-                                </Link>
+                                    </Link>
                                 </li>
                             }
                         </ul>
@@ -50,7 +50,7 @@ class Navbar extends Component {
                 </nav>
 
                 <ul className="sidenav" id="mobile-demo">
-                    <li><LinkStyled to="/" >Logo</LinkStyled></li>
+                    <li><LinkBrand to="/" ><img style={{height:"60px"}} src={require("../../../public/logo.png")} alt="COURSEBEE"/></LinkBrand></li>
                     {this.props.auth.isAuthenticated ?
                         <li><LinkStyled to="#">{this.props.auth.user.name}</LinkStyled></li> : null
                     }
