@@ -11,13 +11,13 @@ import setCurrentUser from "./setUser";
 export const registerUser = (userData, history) => dispatch => {
     console.log(userData)
     axios
-        .post("https://coursebee-app-passport.herokuapp.com/register", qs.stringify(userData))
-        .then(res => history.push("https://coursebee-app-passport.herokuapp.com/login")) // re-direct to login on successful register
-        .catch(err =>
+        .post("/register", qs.stringify(userData))
+        .then(res => history.push("/login")) // re-direct to login on successful register
+        .catch(err =>{console.log(err)
             dispatch({
                 type: GET_ERRORS,
                 payload: err.response.data
-            })
+            })}
         );
 };
 
@@ -25,7 +25,7 @@ export const registerUser = (userData, history) => dispatch => {
 // Login - get user token
 export const loginUser = userData => dispatch => {
     axios
-        .post("https://coursebee-app-passport.herokuapp.com/login", qs.stringify(userData))
+        .post("/login", qs.stringify(userData))
         .then(res => {
             // Save to localStorage// Set token to localStorage
             const { token } = res.data;

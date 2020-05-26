@@ -7,6 +7,9 @@ import logoutUser from "./actions/logoutAction";
 
 import { Provider } from "react-redux";
 import store from "./store";
+import axios from "axios";
+
+
 
 import Navbar from "./components/layout/Navbar";
 import Landing from "./components/landing/Landing";
@@ -24,6 +27,8 @@ import DashboardMentor from "./components/dashboardMentor/DashboardMentor";
 import DashboardAdmin from "./components/dashboardAdmin/DashboardAdmin";
 import Footer from "./components/layout/Footer";
 
+axios.defaults.baseURL="http://localhost:5000"
+//axios.defaults.baseURL="https://coursebee-app-passport.herokuapp.com"
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth

@@ -5,6 +5,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const app = express();
+const cors = require('cors');
 const students = require("./routes/students");
 const mentors = require("./routes/mentors");
 const admins = require("./routes/admins");
@@ -16,7 +17,7 @@ require('./auth/authMentor');
 if(process.env.NODE_ENV === 'production'){
   app.use(express.static('../client/build'));
 } 
-
+app.use(cors());
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
 app.use("/", students);
 app.use("/mentor", mentors);
