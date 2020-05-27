@@ -17,7 +17,7 @@ router.post('/register', async (req, res, next) => {
                 console.log(info)
                 return res.status(400).json(info)
             }
-            return res.json(user)
+            return res.json({ id: user.id, name: user.name, email: user.email, emailVerify: user.emailVerify, type: "student" })
         } catch (error) {
             return next(error);
         }
@@ -29,7 +29,7 @@ router.post('/login', async (req, res, next) => {
     const { errors, isValid } = validateLoginInput(req.body);// Check validation
     if (!isValid) {
         return next(errors);
-    } 
+    }
     passport.authenticate('login', async (err, user, info) => {
         try {
             if (err || !user) {
@@ -40,8 +40,8 @@ router.post('/login', async (req, res, next) => {
                 if (error) return next(error)
                 //We don't want to store the sensitive information such as the
                 //user password in the token so we pick only the email and id
-                console.log(user.id)
-                const payload = { id: user.id, name: user.name, type: "student" };// Sign token
+                console.log(user)
+                const payload = { id: user.id, name: user.name, email: user.email, emailVerify: user.emailVerify, type: "student" };// Sign token
                 const token = jwt.sign(payload, process.env.secretOrKey, { expiresIn: 2678400 /* 1 month in seconds*/ });
                 return res.json({ success: true, token: token });
             });

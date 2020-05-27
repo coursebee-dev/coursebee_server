@@ -7,9 +7,7 @@
     "build": "cd client && npm run build",
     "heroku-postbuild": "npm run install-client && npm run build && cd server && npm i --save",
     "start" : "cd server && npm run start",
-    "server": "cd server && nodemon server.js",
-    "client": "cd client && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "cd server && npm run dev"
   },
   "keywords": [],
   "author": "",

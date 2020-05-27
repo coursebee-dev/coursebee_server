@@ -21,14 +21,15 @@ import RegisterMentor from "./components/authMentor/RegisterMentor";
 import LoginMentor from "./components/authMentor/LoginMentor";
 import RegisterAdmin from "./components/authAdmin/RegisterAdmin";
 import LoginAdmin from "./components/authAdmin/LoginAdmin";
+import VerifyEmail from "./components/verifyEmail/VerifyEmail"
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
 import DashboardMentor from "./components/dashboardMentor/DashboardMentor";
 import DashboardAdmin from "./components/dashboardAdmin/DashboardAdmin";
 import Footer from "./components/layout/Footer";
 
-//axios.defaults.baseURL="http://localhost:5000"
-axios.defaults.baseURL="https://coursebee-app-passport.herokuapp.com"
+axios.defaults.baseURL="http://localhost:5000"
+//axios.defaults.baseURL="https://coursebee-app-passport.herokuapp.com"
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -65,6 +66,7 @@ class App extends Component {
             <Route exact path="/mentor/login" component={LoginMentor} />
             <Route exact path="/admin/register" component={RegisterAdmin} />
             <Route exact path="/admin/login" component={LoginAdmin} />
+            <Route exact path="/verifyEmail" component={VerifyEmail} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
             <PrivateRoute exact path="/mentor/dashboard" component={DashboardMentor} />
             <PrivateRoute exact path="/admin/dashboard" component={DashboardAdmin} />
