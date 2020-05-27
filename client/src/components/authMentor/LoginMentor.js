@@ -9,6 +9,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 class Login extends Component {
     constructor() {
         super();
+        this.verifyCaptcha = this.verifyCaptcha.bind(this)
         this.state = {
             email: "",
             password: "",
