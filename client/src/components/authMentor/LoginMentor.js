@@ -4,12 +4,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginMentor } from "../../actions/authActionMentor";
 import classnames from "classnames";
-import ReCAPTCHA from 'react-google-recaptcha';
 
 class Login extends Component {
     constructor() {
         super();
-        this.verifyCaptcha = this.verifyCaptcha.bind(this)
         this.state = {
             email: "",
             password: "",
@@ -48,19 +46,10 @@ class Login extends Component {
             email: this.state.email,
             password: this.state.password
         };
-        if (this.state.captcha) {
-            this.props.loginMentor(userData);
-        } else {
-            alert('Please verify captcha!')
-        }
+        this.props.loginMentor(userData);
+
         // since we handle the redirect within our component, we don't need to pass in this.props.history as a parameter
     };
-
-    verifyCaptcha(response) {
-        if (response) {
-            this.setState({ captcha: true })
-        }
-    }
 
     render() {
         const { errors } = this.state; return (
@@ -114,29 +103,20 @@ class Login extends Component {
                                     {errors.passwordincorrect}
                                 </span>
                             </div>
-                            {this.state.captcha ? (
-                                <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                                    <button
-                                        style={{
-                                            width: "150px",
-                                            borderRadius: "3px",
-                                            letterSpacing: "1.5px",
-                                            marginTop: "1rem"
-                                        }}
-                                        type="submit"
-                                        className="btn btn-large waves-effect waves-light hoverable teal darken-1"
-                                    >
-                                        Login
+                            <div className="col s12" style={{ paddingLeft: "11.250px" }}>
+                                <button
+                                    style={{
+                                        width: "150px",
+                                        borderRadius: "3px",
+                                        letterSpacing: "1.5px",
+                                        marginTop: "1rem"
+                                    }}
+                                    type="submit"
+                                    className="btn btn-large waves-effect waves-light hoverable teal darken-1"
+                                >
+                                    Login
                                 </button>
-                                </div>
-                            ) : (
-                                    <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                                        <ReCAPTCHA
-                                            sitekey="6LdwaPoUAAAAAHsHxjijN2QsFfNRMs-8Km7mFjag"
-                                            onChange={this.verifyCaptcha}
-                                        />
-                                    </div>
-                                )}
+                            </div>
                         </form>
                     </div>
                 </div>
