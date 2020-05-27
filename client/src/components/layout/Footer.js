@@ -19,7 +19,7 @@ class Footer extends Component {
                 <footer className="page-footer white z-depth-4">
                     <div className="container" style={{ width: "600px", justifyContent: "center" }}>
                         <ul className="row">
-                            <li className="col s12 m6 l2"><LinkStyled to="#">About</LinkStyled></li>
+                            <li className="col s12 m6 l2"><LinkStyled to="/about">About</LinkStyled></li>
                             <li className="col s12 m6 l2"><LinkStyled to="#" title="Contact">Contact</LinkStyled></li>
                             <li className="col s12 m6 l2"><LinkStyled to="#" title="Daftar Isi">Sitemap</LinkStyled></li>
                             <li className="col s12 m6 l2"><LinkStyled to="#">Privacy</LinkStyled></li>

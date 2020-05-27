@@ -26,9 +26,10 @@ import Dashboard from "./components/dashboard/Dashboard";
 import DashboardMentor from "./components/dashboardMentor/DashboardMentor";
 import DashboardAdmin from "./components/dashboardAdmin/DashboardAdmin";
 import Footer from "./components/layout/Footer";
+import About from "./components/pages/About";
 
 //axios.defaults.baseURL="http://localhost:5000"
-axios.defaults.baseURL="https://coursebee-app-passport.herokuapp.com"
+axios.defaults.baseURL = "https://coursebee-app-passport.herokuapp.com"
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -39,11 +40,11 @@ if (localStorage.jwtToken) {
   // Set user and isAuthenticated
   store.dispatch(setCurrentUser(decoded));
   // Check for expired token
-  const currentTime = Date.now() / 1000; 
+  const currentTime = Date.now() / 1000;
   // to get in milliseconds
   if (decoded.exp < currentTime) {
     // Logout user
-    store.dispatch(logoutUser());    
+    store.dispatch(logoutUser());
     // Redirect to home
     window.location.href = "./";
   }
@@ -65,10 +66,11 @@ class App extends Component {
             <Route exact path="/mentor/login" component={LoginMentor} />
             <Route exact path="/admin/register" component={RegisterAdmin} />
             <Route exact path="/admin/login" component={LoginAdmin} />
+            <Route exact path="/about" component={About} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
             <PrivateRoute exact path="/mentor/dashboard" component={DashboardMentor} />
             <PrivateRoute exact path="/admin/dashboard" component={DashboardAdmin} />
-            <Footer/>
+            <Footer />
           </div>
         </Router>
       </Provider>
