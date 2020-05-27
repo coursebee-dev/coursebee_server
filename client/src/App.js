@@ -55,23 +55,21 @@ class App extends Component {
     return (
       <Provider store={store}>
         <Router>
-          <div className="App">
-            <Navbar />
-            <Route exact path="/" component={Landing} />
-            <Route exact path="/mentor" component={LandingMentor} />
-            <Route exact path="/admin" component={LandingAdmin} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/mentor/register" component={RegisterMentor} />
-            <Route exact path="/mentor/login" component={LoginMentor} />
-            <Route exact path="/admin/register" component={RegisterAdmin} />
-            <Route exact path="/admin/login" component={LoginAdmin} />
-            <Route exact path="/about" component={About} />
-            <PrivateRoute exact path="/dashboard" component={Dashboard} />
-            <PrivateRoute exact path="/mentor/dashboard" component={DashboardMentor} />
-            <PrivateRoute exact path="/admin/dashboard" component={DashboardAdmin} />
-            <Footer />
-          </div>
+          <Navbar />
+          <Route exact path="/" component={Landing} />
+          <Route exact path="/mentor" component={LandingMentor} />
+          <Route exact path="/admin" component={LandingAdmin} />
+          <Route exact path="/register" component={Register} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/mentor/register" component={RegisterMentor} />
+          <Route exact path="/mentor/login" component={LoginMentor} />
+          <Route exact path="/admin/register" component={RegisterAdmin} />
+          <Route exact path="/admin/login" component={LoginAdmin} />
+          <Route exact path="/about" component={About} />
+          <PrivateRoute exact path="/dashboard" component={Dashboard} />
+          <PrivateRoute exact path="/mentor/dashboard" component={DashboardMentor} />
+          <PrivateRoute exact path="/admin/dashboard" component={DashboardAdmin} />
+          <Footer />
         </Router>
       </Provider>
     );

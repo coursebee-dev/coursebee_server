@@ -21,7 +21,7 @@ const LinkBrand = styled(Link)`
 class Navbar extends Component {
     render() {
         return (
-            <div>
+            <>
                 <nav style={{ height: "64px" }} className="white z-depth-2">
                     <div className="nav-wrapper">
                         <ul className="left">
@@ -34,8 +34,10 @@ class Navbar extends Component {
                         </ul>
                         <ul className="right hide-on-med-and-down">
                             {this.props.auth.isAuthenticated ? <li><UserIcon /></li> : null}
-                            <li><LinkStyled to="#">About Us</LinkStyled></li>
-                            <li><LinkStyled to="#">Courses</LinkStyled></li>
+                            <li><LinkStyled to="/about">About Us</LinkStyled></li>
+                            <li><LinkStyled to="/liveclass">Live Classroom</LinkStyled></li>
+                            <li><LinkStyled to="/courses">Courses</LinkStyled></li>
+                            <li><LinkStyled to="/training">Training</LinkStyled></li>
                             {this.props.auth.isAuthenticated ? null :
                                 <li>
                                     <Link className="teal darken-1" to="/mentor">
@@ -64,7 +66,7 @@ class Navbar extends Component {
                     <li><Link to="#!" className="sidenav-close"><i className="material-icons">close</i></Link></li>
 
                 </ul>
-            </div>
+            </>
         );
     }
 }

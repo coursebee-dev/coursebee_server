@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { registerUser } from "../../actions/authAction";
 import classnames from "classnames";
 import ReCAPTCHA from 'react-google-recaptcha';
+
 class Register extends Component {
     constructor() {
         super();
@@ -20,6 +21,7 @@ class Register extends Component {
             errors: {},
         };
     }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.errors) {
             this.setState({
@@ -69,8 +71,8 @@ class Register extends Component {
     }
 
     render() {
-        console.log(this.state.captcha)
         const { errors } = this.state;
+        let captcha_secret = process.env.REACT_APP_NOT_CAPTCHA_SECRET
         return (
             <div className="container">
                 <div style={{ marginTop: "4rem", marginBottom: "4rem" }} className="row">
@@ -190,7 +192,7 @@ class Register extends Component {
                             ) : (
                                     <div className="col s12" style={{ paddingLeft: "11.250px" }}>
                                         <ReCAPTCHA
-                                            sitekey="6LdwaPoUAAAAAHsHxjijN2QsFfNRMs-8Km7mFjag"
+                                            sitekey={`${captcha_secret}`}
                                             onChange={this.verifyCaptcha}
                                         />
                                     </div>
