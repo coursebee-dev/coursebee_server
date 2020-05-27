@@ -10,19 +10,19 @@ class DashboardAdmin extends Component {
     this.props.logoutUser();
   };
   render() {
-    const { user } = this.props.auth;return (
+    const { user } = this.props.auth; return (
       <div>
-        <HeaderImg/>       
+        <HeaderImg />
         <div className="row">
-        <div className="col s12 center-align">
+          <div className="col s12 center-align">
             <h4>
               <b>Hello, </b> {user.name.split(" ")[0]}
               <p className="flow-text grey-text text-darken-1">
                 Thank you for signing in to COURSEBEE. We are continuously working to make this a better platform.
-                <br/><br/>If you want to join our team send us a message in our{" "}
-                <a href="https://www.facebook.com/coursebee.live" target="_blank">facebook page</a>.
+                <br /><br />If you want to join our team send us a message in our{" "}
+                <a href="https://www.facebook.com/coursebee.live" target="_blank" rel="noopener noreferrer">facebook page</a>.
               </p>
-              
+
             </h4>
             <button
               style={{

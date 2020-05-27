@@ -4,9 +4,11 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { registerMentor } from "../../actions/authActionMentor";
 import classnames from "classnames";
+import ReCAPTCHA from 'react-google-recaptcha';
 class Register extends Component {
     constructor() {
         super();
+        this.verifyCaptcha = this.verifyCaptcha.bind(this)
         this.state = {
             name: "",
             email: "",
@@ -16,6 +18,7 @@ class Register extends Component {
             organization: "",
             position: "",
             interests: "",
+            captcha: false,
             errors: {}
         };
     }
@@ -30,12 +33,12 @@ class Register extends Component {
         window.scrollTo(0, 0)
         // If logged in and user navigates to Register page, should redirect them to dashboard
         if (this.props.auth.isAuthenticated) {
-            if(this.props.auth.user.type === "student"){
-              this.props.history.push("/dashboard");
-            } else if (this.props.auth.user.type === "mentor"){
-              this.props.history.push("mentor/dashboard");
-            } else if (this.props.auth.user.type === "admin"){
-              this.props.history.push("admin/dashboard");
+            if (this.props.auth.user.type === "student") {
+                this.props.history.push("/dashboard");
+            } else if (this.props.auth.user.type === "mentor") {
+                this.props.history.push("mentor/dashboard");
+            } else if (this.props.auth.user.type === "admin") {
+                this.props.history.push("admin/dashboard");
             }
         }
     }
@@ -55,8 +58,18 @@ class Register extends Component {
             interests: this.state.interests
         };
         console.log(JSON.stringify(newUser));
-        this.props.registerMentor(newUser, this.props.history);
+        if (this.state.captcha) {
+            this.props.registerMentor(newUser, this.props.history);
+        } else {
+            alert('Please verify captcha!')
+        }
     };
+
+    verifyCaptcha(response) {
+        if (response) {
+            this.setState({ captcha: true })
+        }
+    }
 
     render() {
         const { errors } = this.state;
@@ -190,20 +203,29 @@ class Register extends Component {
                                 <label htmlFor="interests">Interests (you may add multiple)</label>
                                 <span className="red-text">{errors.interests}</span>
                             </div>
-                            <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                                <button
-                                    style={{
-                                        width: "150px",
-                                        borderRadius: "3px",
-                                        letterSpacing: "1.5px",
-                                        marginTop: "1rem"
-                                    }}
-                                    type="submit"
-                                    className="btn btn-large waves-effect waves-light hoverable teal darken-1"
-                                >
-                                    Sign up
+                            {this.state.captcha ? (
+                                <div className="col s12" style={{ paddingLeft: "11.250px" }}>
+                                    <button
+                                        style={{
+                                            width: "150px",
+                                            borderRadius: "3px",
+                                            letterSpacing: "1.5px",
+                                            marginTop: "1rem"
+                                        }}
+                                        type="submit"
+                                        className="btn btn-large waves-effect waves-light hoverable teal darken-1"
+                                    >
+                                        Sign up
                                 </button>
-                            </div>
+                                </div>
+                            ) : (
+                                    <div className="col s12" style={{ paddingLeft: "11.250px" }}>
+                                        <ReCAPTCHA
+                                            sitekey="6LdwaPoUAAAAAHsHxjijN2QsFfNRMs-8Km7mFjag"
+                                            onChange={this.verifyCaptcha}
+                                        />
+                                    </div>
+                                )}
                         </form>
                     </div>
                 </div>
