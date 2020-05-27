@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import  logoutUser  from "../../actions/logoutAction";
+import logoutUser from "../../actions/logoutAction";
 import HeaderImg from "../layout/HeaderImg"
 class Dashboard extends Component {
   onLogoutClick = e => {
@@ -13,17 +13,17 @@ class Dashboard extends Component {
     const { user } = this.props.auth;
     return (
       <div>
-        <HeaderImg/>
+        <HeaderImg />
         <div className="row">
           <div className="col s12 center-align">
             <h4>
               <b>Hello, </b> {user.name.split(" ")[0]}
               <p className="flow-text grey-text text-darken-1">
                 Thank you for signing in to COURSEBEE. We are continuously working to make this a better platform.
-                <br/><br/>If you want to join our team send us a message in our{" "}
-                <a href="https://www.facebook.com/coursebee.live" target="_blank">facebook page</a>.
+                <br /><br />If you want to join our team send us a message in our{" "}
+                <a href="https://www.facebook.com/coursebee.live" target="_blank" rel="noopener noreferrer">facebook page</a>.
               </p>
-              
+
             </h4>
             <button
               style={{
