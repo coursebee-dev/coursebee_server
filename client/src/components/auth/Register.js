@@ -54,7 +54,8 @@ class Register extends Component {
             password: this.state.password,
             password2: this.state.password2,
             institution: this.state.institution,
-            subject: this.state.subject
+            subject: this.state.subject,
+            type: "student"
         };
         console.log(JSON.stringify(newUser));
         if (this.state.captcha) {

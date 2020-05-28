@@ -9,6 +9,7 @@ const cors = require('cors');
 const students = require("./routes/students");
 const mentors = require("./routes/mentors");
 const admins = require("./routes/admins");
+const emailVerify = require("./routes/emailVerify");
 require('./auth/auth');
 require('./auth/authAdmin');
 require('./auth/authMentor');
@@ -22,6 +23,7 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
 app.use("/", students);
 app.use("/mentor", mentors);
 app.use("/admin", admins);
+app.use("/email", emailVerify);
 
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true,  useCreateIndex: true  })
 const db = mongoose.connection

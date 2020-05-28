@@ -15,7 +15,7 @@ const LinkStyled = styled(Link)`
 class Footer extends Component {
     render() {
         return (
-            <div>
+            <div style={{marginTop:"40px"}}>
                 <footer className="page-footer white z-depth-4">
                     <div className="container" style={{ width: "600px", justifyContent: "center" }}>
                         <ul className="row">

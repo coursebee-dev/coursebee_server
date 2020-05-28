@@ -9,13 +9,22 @@ class VerifyEmail extends Component {
         if (this.props.location.state === undefined) {
             this.props.history.push('/')
         } else {
-            console.log(this.props.location.state)
-            this.props.sendEmail({ email: this.props.location.state.email }, this.props.history);
+            const userData = {
+                sync_code: `${process.env.REACT_APP_SYNC_CODE}`,
+                email: this.props.location.state.email,
+                type: this.props.location.state.type
+            }
+            this.props.sendEmail(userData, this.props.history);
         }
     }
     onResendClick = e => {
         e.preventDefault();
-        this.props.sendEmail({email: this.props.location.state.email},this.props.history);
+        const userData = {
+            sync_code: `${process.env.REACT_APP_SYNC_CODE}`,
+            email: this.props.location.state.email,
+            type: this.props.location.state.type
+        }
+        this.props.sendEmail(userData, this.props.history);
     };
     render() {
         return (
@@ -40,9 +49,13 @@ class VerifyEmail extends Component {
                     </button>
                     </div>
                     <div style={{ margin: "5%" }}>
-                        <Link className="btn btn-large waves-effect waves-light hoverable orange darken-1 black-text" to="/login">
+                        <Link
+                            className="btn btn-large waves-effect waves-light hoverable orange darken-1 black-text"
+                            to={this.props.location.state.type === "student" ?
+                                "/login" : this.props.location.state.type === "mentor" ?
+                                    "mentor/login" : "/admin/login"}>
                             Proceed to login
-                    </Link>
+                        </Link>
                     </div>
                 </div>
             </div>

@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "classnames": "^2.2.6",
+    "dotenv": "^8.2.0",
     "is-empty": "^1.2.0",
     "jwt-decode": "^2.2.0",
     "react": "^16.13.1",
@@ -17,7 +18,9 @@
     "redux-thunk": "^2.3.0",
     "styled-components": "^5.1.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

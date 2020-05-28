@@ -55,7 +55,8 @@ class Register extends Component {
             mobileNo: this.state.mobileNo,
             organization: this.state.organization,
             position: this.state.position,
-            interests: this.state.interests
+            interests: this.state.interests,
+            type: "mentor"
         };
         console.log(JSON.stringify(newUser));
         if (this.state.captcha) {
@@ -222,7 +223,7 @@ class Register extends Component {
                             ) : (
                                     <div className="col s12" style={{ paddingLeft: "11.250px" }}>
                                         <ReCAPTCHA
-                                            sitekey="6LdwaPoUAAAAAHsHxjijN2QsFfNRMs-8Km7mFjag"
+                                            sitekey={`${captcha_secret}`}
                                             onChange={this.verifyCaptcha}
                                         />
                                     </div>

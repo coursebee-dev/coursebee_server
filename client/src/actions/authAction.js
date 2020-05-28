@@ -14,15 +14,15 @@ export const registerUser = (userData, history) => dispatch => {
         .post("/register", qs.stringify(userData))
         .then(res => {
             console.log(res.data)
-            history.push("/verifyEmail",res.data)
+            history.push("/verifyEmail",userData)
         }) // re-direct to email verification on successful register
         .catch(err =>{
             console.log(err)
             dispatch({
                 type: GET_ERRORS,
                 payload: err.response.data
-            })}
-        );
+            })
+        });
 };
 
 

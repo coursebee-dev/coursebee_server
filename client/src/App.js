@@ -10,7 +10,6 @@ import store from "./store";
 import axios from "axios";
 
 
-
 import Navbar from "./components/layout/Navbar";
 import Landing from "./components/landing/Landing";
 import LandingMentor from "./components/landingMentor/LandingMentor";
@@ -27,7 +26,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import DashboardMentor from "./components/dashboardMentor/DashboardMentor";
 import DashboardAdmin from "./components/dashboardAdmin/DashboardAdmin";
 import Footer from "./components/layout/Footer";
-import About from "./components/pages/About";
+import About from "./components/about/About";
 
 axios.defaults.baseURL="http://localhost:5000"
 //axios.defaults.baseURL="https://coursebee-app-passport.herokuapp.com"
@@ -68,6 +67,7 @@ class App extends Component {
             <Route exact path="/admin/register" component={RegisterAdmin} />
             <Route exact path="/admin/login" component={LoginAdmin} />
             <Route exact path="/verifyEmail" component={VerifyEmail} />
+            <Route exact path="/about" component={About} />
             <PrivateRoute exact path="/dashboard" component={Dashboard} />
             <PrivateRoute exact path="/mentor/dashboard" component={DashboardMentor} />
             <PrivateRoute exact path="/admin/dashboard" component={DashboardAdmin} />

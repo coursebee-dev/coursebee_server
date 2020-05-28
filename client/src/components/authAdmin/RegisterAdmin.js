@@ -54,7 +54,8 @@ class Register extends Component {
             organization: this.state.organization,
             position: this.state.position,
             location: this.state.location,
-            adminKey: this.state.adminKey
+            adminKey: this.state.adminKey,
+            type: "admin"
         };
         console.log(JSON.stringify(newUser));
         this.props.registerAdmin(newUser, this.props.history);

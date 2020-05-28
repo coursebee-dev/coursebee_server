@@ -11,30 +11,38 @@ import setCurrentUser from "./setUser";
 export const registerAdmin = (userData, history) => dispatch => {
     axios
         .post("/admin/register", qs.stringify(userData))
-        .then(res => history.push("/admin/login")) // re-direct to login on successful register
-        .catch(err =>
+        .then(res => {
+            console.log(res.data)
+            history.push("/verifyEmail", userData)
+        }) // re-direct to email verification on successful register
+        .catch(err => {
+            console.log(err)
             dispatch({
                 type: GET_ERRORS,
                 payload: err.response.data
             })
-        );
+        });
 };
 
 
 // Login - get user token
-export const loginAdmin = userData => dispatch => {
+export const loginAdmin = (userData,history) => dispatch => {
     axios
         .post("/admin/login", qs.stringify(userData))
         .then(res => {
             // Save to localStorage// Set token to localStorage
             const { token } = res.data;
-            localStorage.setItem("jwtToken", token);
-            // Set token to Auth header
-            setAuthToken(token);
             // Decode token to get user data
             const decoded = jwt_decode(token);
-            // Set current user
-            dispatch(setCurrentUser(decoded));
+            if(decoded.emailVerify === false){
+                history.push("/verifyEmail",decoded)
+            } else{
+                localStorage.setItem("jwtToken", token);
+                // Set token to Auth header
+                setAuthToken(token);
+                // Set current user
+                dispatch(setCurrentUser(decoded));
+            }
         })
         .catch(err =>
             dispatch({
