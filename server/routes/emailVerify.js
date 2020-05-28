@@ -29,9 +29,9 @@ router.get('/send', async (req, res) => {
             html: "Hello,<br> Please Click on the link to verify your email.<br><a href=" + link + ">Click here to verify</a>"
         }
         //console.log(mailOptions);
-        res.json({ message: "email sent", email_token: token })
-        //const info = await transporter.sendMail(mailOptions);
-        //console.log("accepted by " + info.accepted);
+        res.json({ message: "email sent"})
+        const info = await transporter.sendMail(mailOptions);
+        console.log("accepted by " + info.accepted);
     } catch (error) {
         console.log(error.message)
         res.status(500).json(error.message)
