@@ -73,6 +73,7 @@ class Register extends Component {
 
     render() {
         const { errors } = this.state;
+        let captcha_secret = process.env.REACT_APP_NOT_CAPTCHA_SECRET
         return (
             <div className="container">
                 <div style={{ marginTop: "4rem", marginBottom: "4rem" }} className="row">
