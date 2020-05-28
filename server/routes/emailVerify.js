@@ -24,7 +24,7 @@ router.get('/send', async (req, res) => {
         const link = "http://" + req.get('host') + "/email/verify?token=" + token;
         //console.log(req.query)
         const mailOptions = {
-            to: "shihab1069@gmail.com",
+            to: req.query.email,
             subject: "Please confirm your Email account",
             html: "Hello,<br> Please Click on the link to verify your email.<br><a href=" + link + ">Click here to verify</a>"
         }
