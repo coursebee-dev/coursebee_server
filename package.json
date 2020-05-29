@@ -4,13 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "install-client": "cd ../client && npm install",
-    "build": "cd ../client && npm run build",
-    "heroku-postbuild": "npm run install-client && npm run build && npm i --save",
+    "heroku-postbuild": "npm i --save",
     "start": "node server.js",
-    "server": "nodemon server.js",
-    "client": "cd ../client && npm start",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "server": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
