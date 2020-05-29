@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 import setCurrentUser from "./actions/setUser";
@@ -29,7 +29,7 @@ import Footer from "./components/layout/Footer";
 import About from "./components/about/About";
 
 //axios.defaults.baseURL="http://localhost:5000"
-axios.defaults.baseURL="https://coursebee-app-passport.herokuapp.com"
+axios.defaults.baseURL = "https://coursebee-app-passport.herokuapp.com"
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -55,24 +55,26 @@ class App extends Component {
     return (
       <Provider store={store}>
         <Router>
-          <div className="App">
-            <Navbar />
-            <Route exact path="/" component={Landing} />
-            <Route exact path="/mentor" component={LandingMentor} />
-            <Route exact path="/admin" component={LandingAdmin} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/mentor/register" component={RegisterMentor} />
-            <Route exact path="/mentor/login" component={LoginMentor} />
-            <Route exact path="/admin/register" component={RegisterAdmin} />
-            <Route exact path="/admin/login" component={LoginAdmin} />
-            <Route exact path="/verifyEmail" component={VerifyEmail} />
-            <Route exact path="/about" component={About} />
-            <PrivateRoute exact path="/dashboard" component={Dashboard} />
-            <PrivateRoute exact path="/mentor/dashboard" component={DashboardMentor} />
-            <PrivateRoute exact path="/admin/dashboard" component={DashboardAdmin} />
-            <Footer/>
-          </div>
+          <Switch>
+            <div className="App">
+              <Navbar />
+              <Route exact path="/" component={Landing} />
+              <Route exact path="/mentor" component={LandingMentor} />
+              <Route exact path="/admin" component={LandingAdmin} />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/mentor/register" component={RegisterMentor} />
+              <Route exact path="/mentor/login" component={LoginMentor} />
+              <Route exact path="/admin/register" component={RegisterAdmin} />
+              <Route exact path="/admin/login" component={LoginAdmin} />
+              <Route exact path="/verifyEmail" component={VerifyEmail} />
+              <Route exact path="/about" component={About} />
+              <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              <PrivateRoute exact path="/mentor/dashboard" component={DashboardMentor} />
+              <PrivateRoute exact path="/admin/dashboard" component={DashboardAdmin} />
+              <Footer />
+            </div>
+          </Switch>
         </Router>
       </Provider>
     );
