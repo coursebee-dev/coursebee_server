@@ -20,10 +20,10 @@ if(process.env.NODE_ENV === 'production'){
 } 
 app.use(cors());
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
-app.use("/", students);
-app.use("/mentor", mentors);
-app.use("/admin", admins);
-app.use("/email", emailVerify);
+app.use("/api", students);
+app.use("/api/mentor", mentors);
+app.use("/api/admin", admins);
+app.use("/api/email", emailVerify);
 
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true,  useCreateIndex: true  })
 const db = mongoose.connection

@@ -2,7 +2,7 @@ import axios from "axios";
 
 const sendEmail = (userData) => () =>{
     axios
-        .get("email/send", {params:userData})
+        .get("/apiemail/send", {params:userData})
         .then(res => {
             console.log(res.data)
         }) 

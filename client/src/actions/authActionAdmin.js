@@ -10,7 +10,7 @@ import setCurrentUser from "./setUser";
 // Register User
 export const registerAdmin = (userData, history) => dispatch => {
     axios
-        .post("/admin/register", qs.stringify(userData))
+        .post("/api/admin/register", qs.stringify(userData))
         .then(res => {
             console.log(res.data)
             history.push("/verifyEmail", userData)
@@ -28,7 +28,7 @@ export const registerAdmin = (userData, history) => dispatch => {
 // Login - get user token
 export const loginAdmin = (userData,history) => dispatch => {
     axios
-        .post("/admin/login", qs.stringify(userData))
+        .post("/api/admin/login", qs.stringify(userData))
         .then(res => {
             // Save to localStorage// Set token to localStorage
             const { token } = res.data;
