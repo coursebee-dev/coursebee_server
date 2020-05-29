@@ -43,15 +43,15 @@ router.get('/verify', async (req, res) => {
         const decoded = jwt.verify(req.query.token, process.env.EMAIL_SECRET)
         if(decoded.type==="student"){
             await Student.findOneAndUpdate({email:decoded.email}, {emailVerify: true} )
-            res.redirect("https://" + req.get('host') + "/login")
+            res.redirect("https://coursebee.com/login")
         } else if(decoded.type==="mentor"){
             await Mentor.findOneAndUpdate({email:decoded.email}, {emailVerify: true} )
-            res.redirect("https://" + req.get('host') + "/mentor/login")
+            res.redirect("https://coursebee.com/mentor/login")
         } else if(decoded.type==="admin"){
             await Admin.findOneAndUpdate({email:decoded.email}, {emailVerify: true} )
-            res.redirect("https://" + req.get('host') + "/admin/login")
+            res.redirect("https://coursebee.com/admin/login")
         }
-        res.redirect("https://" + req.get('host'))
+        res.redirect("https://coursebee.com")
     } catch (error) {
         console.log("email is not verified");
         res.end("<h1>Bad Request</h1>");
