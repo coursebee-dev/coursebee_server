@@ -21,7 +21,7 @@ router.get('/send', async (req, res) => {
         });
         const payload = { email: req.query.email, type: req.query.type };// Sign token
         const token = jwt.sign(payload, process.env.EMAIL_SECRET, { expiresIn: 2678400 /* 1 month in seconds*/ });
-        const link = "http://" + req.get('host') + "/email/verify?token=" + token;
+        const link = "http://" + req.get('host') + "/api/email/verify?token=" + token;
         //console.log(req.query)
         const mailOptions = {
             to: req.query.email,
