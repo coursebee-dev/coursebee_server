@@ -28,7 +28,7 @@ app.use("/api/email", emailVerify);
 mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true,  useCreateIndex: true  })
 const db = mongoose.connection
 db.on('error', error => console.log(error))
-db.once('open',() => console.log('Connected to Mongoose'))
+db.once('open',() => console.log('Connected to Mongoose! Database is up!!'))
 
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
