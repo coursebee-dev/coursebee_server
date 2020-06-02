@@ -34,7 +34,7 @@ module.exports = function validateRegisterInput(data) {
   if (Validator.isEmpty(data.mobileNo)) {
     errors.mobileNo = "Mobile number field is required";
   }
-  if (!/(^(\+88|0088)?(01){1}[3456789]{1}(\d){8})$/.test(data.mobileNo)) {
+  if (!/^[+]*[0-9]+$/.test(data.mobileNo)) {
     errors.mobileNo = "Mobile number is invalid";
   }
   if (Validator.isEmpty(data.organization)) {
