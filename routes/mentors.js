@@ -6,18 +6,18 @@ const validateRegisterInput = require("../validation/mentorRegister");
 const validateLoginInput = require("../validation/login");// Load User model
 
 router.post('/register', async (req, res, next) => {
-    const { errors, isValid } = validateRegisterInput(req.body);
-    // Check validation
-    if (!isValid) {
-        return next(errors);
-    }
+    // const { errors, isValid } = validateRegisterInput(req.body);
+    // // Check validation
+    // if (!isValid) {
+    //     return next(errors);
+    // }
     passport.authenticate('registerMentor', async (err, user, info) => {
         try {
             if (err || !user) {
                 console.log(info)
                 return res.status(400).json(info)
             }
-            return res.json({ id: user.id, name: user.name, email: user.email, emailVerify: user.emailVerify, type: "mentor" })
+            return res.json({ id: user.id, name: user.name, email: user.email, emailVerify: user.emailVerify, adminVerify: user.adminVerify, type: "mentor" })
         } catch (error) {
             return next(error);
         }
@@ -26,10 +26,10 @@ router.post('/register', async (req, res, next) => {
 
 
 router.post('/login', async (req, res, next) => {
-    const { errors, isValid } = validateLoginInput(req.body);// Check validation
-    if (!isValid) {
-        return next(errors);
-    } 
+    // const { errors, isValid } = validateLoginInput(req.body);// Check validation
+    // if (!isValid) {
+    //     return next(errors);
+    // } 
     passport.authenticate('loginMentor', async (err, user, info) => {
         try {
             if (err || !user) {
@@ -41,7 +41,7 @@ router.post('/login', async (req, res, next) => {
                 //We don't want to store the sensitive information such as the
                 //user password in the token so we pick only the email and id
                 //console.log(user)
-                const payload = { id: user.id, name: user.name, email: user.email, emailVerify: user.emailVerify, type: "mentor" };// Sign token
+                const payload = { id: user.id, name: user.name, email: user.email, emailVerify: user.emailVerify, adminVerify: user.adminVerify, type: "mentor" };// Sign token
                 const token = jwt.sign(payload, process.env.secretOrKey, { expiresIn: 2678400 /* 1 month in seconds*/ });
                 return res.json({ success: true, token: token });
             });

@@ -4,13 +4,14 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const validateRegisterInput = require("../validation/adminRegister");
 const validateLoginInput = require("../validation/login");// Load User model
+const MentorModel = require("../models/Mentor")
 
 router.post('/register', async (req, res, next) => {
-    const { errors, isValid } = validateRegisterInput(req.body);
-    // Check validation
-    if (!isValid) {
-        return next(errors);
-    }
+    // const { errors, isValid } = validateRegisterInput(req.body);
+    // // Check validation
+    // if (!isValid) {
+    //     return next(errors);
+    // }
     passport.authenticate('registerAdmin', async (err, user, info) => {
         try {
             if (err || !user) {
@@ -26,10 +27,10 @@ router.post('/register', async (req, res, next) => {
 
 
 router.post('/login', async (req, res, next) => {
-    const { errors, isValid } = validateLoginInput(req.body);// Check validation
-    if (!isValid) {
-        return next(errors);
-    } 
+    // const { errors, isValid } = validateLoginInput(req.body);// Check validation
+    // if (!isValid) {
+    //     return next(errors);
+    // } 
     passport.authenticate('loginAdmin', async (err, user, info) => {
         try {
             if (err || !user) {
@@ -60,7 +61,25 @@ router.get('/profile', passport.authenticate('jwtAdmin', { session: false }), (r
     })
 });
 
+router.get('/allMentors', async (req,res,next) =>{
+    try{
+        const allMentors = await MentorModel.find({});
+        res.json(allMentors);
+    } catch(err) {
+        return next(err)
+    } 
+});
 
-
+router.put('/verifyMentor/:id', async (req,res,next) =>{
+    try{
+        const mentor = await MentorModel.findById(req.params.id)
+        mentor.adminVerify = true;
+        //console.log(mentor);
+        await mentor.save();
+        res.json({ message: "success"});
+    } catch(err) {
+        return next(err)
+    } 
+});
 
 module.exports = router;

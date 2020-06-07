@@ -22,9 +22,10 @@ router.get('/send', async (req, res) => {
         const payload = { email: req.query.email, type: req.query.type };// Sign token
         const token = jwt.sign(payload, process.env.EMAIL_SECRET, { expiresIn: 2678400 /* 1 month in seconds*/ });
         const link = "http://" + req.get('host') + "/api/email/verify?token=" + token;
-        //console.log(req.query)
+        //console.log(link)
         const mailOptions = {
-            to: req.query.email,
+            //to: req.query.email,
+            to: `${process.env.GMAIL_USER}`,
             subject: "Please confirm your Email account",
             html: "Hello,<br> Please Click on the link to verify your email.<br><a href=" + link + ">Click here to verify</a>"
         }

@@ -44,6 +44,10 @@ const UserSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  liveClass:{
+    liveReq:{type: Array , default: []},
+    liveSchedules:{type: Array , default: []}
   }
 });
 
