@@ -5,6 +5,7 @@ const router = express.Router();
 const validateRegisterInput = require("../validation/adminRegister");
 const validateLoginInput = require("../validation/login");// Load User model
 const MentorModel = require("../models/Mentor")
+const StudentModel = require('../models/Student')
 
 router.post('/register', async (req, res, next) => {
     // const { errors, isValid } = validateRegisterInput(req.body);
@@ -65,6 +66,15 @@ router.get('/allMentors', async (req,res,next) =>{
     try{
         const allMentors = await MentorModel.find({});
         res.json(allMentors);
+    } catch(err) {
+        return next(err)
+    } 
+});
+
+router.get('/allStudents', async (req,res,next) =>{
+    try{
+        const allStudents = await StudentModel.find({});
+        res.json(allStudents);
     } catch(err) {
         return next(err)
     } 
