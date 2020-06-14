@@ -4,8 +4,10 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const validateRegisterInput = require("../validation/adminRegister");
 const validateLoginInput = require("../validation/login");// Load User model
+const StudentModel = require('../models/Student')
 const MentorModel = require("../models/Mentor")
 const LiveClassModel = require("../models/LiveClass")
+
 
 router.post('/register', async (req, res, next) => {
     // const { errors, isValid } = validateRegisterInput(req.body);
@@ -60,6 +62,16 @@ router.get('/profile', passport.authenticate('jwtAdmin', { session: false }), (r
         user: req.user,
         token: req.query.secret_token
     })
+});
+
+
+router.get('/allStudents',passport.authenticate('jwtAdmin', { session: false }), async (req,res,next) =>{
+    try{
+        const allStudents = await StudentModel.find({});
+        res.json(allStudents);
+    } catch(err) {
+        return next(err)
+    } 
 });
 
 router.get('/allMentors',passport.authenticate('jwtAdmin', { session: false }), async (req,res,next) =>{
