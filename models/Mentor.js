@@ -11,9 +11,9 @@ const UserSchema = new Schema({
   email: {
     type: String,
     required: true,
-    unique : true
+    unique: true
   },
-  emailVerify:{
+  emailVerify: {
     type: Boolean,
     default: false
   },
@@ -21,9 +21,9 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  adminVerify:{
+  adminVerify: {
     type: Boolean,
-    default: false
+    default: true
   },
   mobileNo: {
     type: String,
@@ -44,14 +44,10 @@ const UserSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
-  },
-  liveClass:{
-    liveReq:{type: Array , default: []},
-    liveSchedules:{type: Array , default: []}
   }
 });
 
-UserSchema.pre('save', async function(next){
+UserSchema.pre('save', async function (next) {
   const user = this;
   //Hash the password with a salt round of 10, the higher the rounds the more secure, but the slower
   //your application becomes.
@@ -60,7 +56,7 @@ UserSchema.pre('save', async function(next){
   next();
 });
 
-UserSchema.methods.isValidPassword = async function(password){
+UserSchema.methods.isValidPassword = async function (password) {
   const user = this;
   const compare = await bcrypt.compare(password, user.password);
   return compare;

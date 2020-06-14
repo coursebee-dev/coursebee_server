@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const validateRegisterInput = require("../validation/mentorRegister");
 const validateLoginInput = require("../validation/login");// Load User model
+const MentorModel = require("../models/Mentor")
+const LiveClassModel = require("../models/LiveClass")
 
 router.post('/register', async (req, res, next) => {
     // const { errors, isValid } = validateRegisterInput(req.body);
@@ -60,7 +62,30 @@ router.get('/profile', passport.authenticate('jwtMentor', { session: false }), (
     })
 });
 
+router.post('/scheduleclass/:id', passport.authenticate('jwtMentor', { session: false }), async (req, res, next) => {
+    try {
+        //console.log(req.params.id)
+        await LiveClassModel.create(req.body);
+        //console.log(liveClass)
+        res.json({ message: 'success' })
+    }
+    catch (err) {
+        console.log(err)
+        return next(err);
+    }
+});
 
+router.get('/liveclass/:id',passport.authenticate('jwtMentor', { session: false }), async (req, res, next) => {
+    try {
+        const liveClass = await LiveClassModel.find({mentorId:req.params.id})
+        console.log(liveClass)
+        res.json(liveClass)
+    }
+    catch (err) {
+        console.log(err)
+        return next(err);
+    }
+});
 
 
 module.exports = router;

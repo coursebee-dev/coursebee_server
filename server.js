@@ -25,7 +25,7 @@ app.use("/api/mentor", mentors);
 app.use("/api/admin", admins);
 app.use("/api/email", emailVerify);
 
-mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true,  useCreateIndex: true  })
+mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true,  useCreateIndex: true, useFindAndModify: false})
 const db = mongoose.connection
 db.on('error', error => console.log(error))
 db.once('open',() => console.log('Connected to Mongoose! Database is up!!'))

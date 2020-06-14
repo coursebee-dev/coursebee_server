@@ -59,7 +59,7 @@ passport.use('jwtAdmin', new JWTstrategy({
   //secret we used to sign our JWT
   secretOrKey: process.env.secretOrKey,
   //we expect the user to send the token as a query parameter with the name 'secret_token'
-  jwtFromRequest: ExtractJWT.fromUrlQueryParameter('secret_token')
+  jwtFromRequest: ExtractJWT.fromHeader('authorization')
 }, async (token, done) => {
   try {
     console.log(token)

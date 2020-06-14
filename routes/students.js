@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const validateRegisterInput = require("../validation/studentRegister");
 const validateLoginInput = require("../validation/login");// Load User model
+const LiveClassModel = require("../models/LiveClass")
 
 router.post('/register', async (req, res, next) => {
     // const { errors, isValid } = validateRegisterInput(req.body);
@@ -61,6 +62,16 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
 });
 
 
-
+router.get('/approvedliveclass', async (req, res, next) => {
+    try {
+        const liveClass = await LiveClassModel.find({approved:true})
+        //console.log(liveClass)
+        res.json(liveClass)
+    }
+    catch (err) {
+        console.log(err)
+        return next(err);
+    }
+});
 
 module.exports = router;

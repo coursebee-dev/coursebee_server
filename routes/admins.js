@@ -5,6 +5,7 @@ const router = express.Router();
 const validateRegisterInput = require("../validation/adminRegister");
 const validateLoginInput = require("../validation/login");// Load User model
 const MentorModel = require("../models/Mentor")
+const LiveClassModel = require("../models/LiveClass")
 
 router.post('/register', async (req, res, next) => {
     // const { errors, isValid } = validateRegisterInput(req.body);
@@ -61,25 +62,62 @@ router.get('/profile', passport.authenticate('jwtAdmin', { session: false }), (r
     })
 });
 
-router.get('/allMentors', async (req,res,next) =>{
+router.get('/allMentors',passport.authenticate('jwtAdmin', { session: false }), async (req,res,next) =>{
     try{
-        const allMentors = await MentorModel.find({});
+        const allMentors = await MentorModel.find({},'_id name email organization position mobileNo adminVerify');
+        console.log(allMentors)
         res.json(allMentors);
+    } catch(err) {
+        console.log(err)
+        return next(err)
+    } 
+});
+
+router.get('/allMentors/:id',passport.authenticate('jwtAdmin', { session: false }), async (req,res,next) =>{
+    try{
+        const mentor = await MentorModel.findById(req.params.id);
+        res.json(mentor);
     } catch(err) {
         return next(err)
     } 
 });
 
-router.put('/verifyMentor/:id', async (req,res,next) =>{
+router.put('/verifyMentor/:id',passport.authenticate('jwtAdmin', { session: false }), async (req,res,next) =>{
     try{
-        const mentor = await MentorModel.findById(req.params.id)
-        mentor.adminVerify = true;
-        //console.log(mentor);
-        await mentor.save();
+        const filter = { _id : req.params.id }
+        const update = { adminVerify: true }
+        await MentorModel.updateOne( filter, update );
         res.json({ message: "success"});
     } catch(err) {
         return next(err)
     } 
 });
+
+router.get('/allliveclass',passport.authenticate('jwtAdmin', { session: false }), async (req, res, next) => {
+    try {
+        const liveClass = await LiveClassModel.find({})
+        //console.log(liveClass)
+        res.json(liveClass)
+    }
+    catch (err) {
+        console.log(err)
+        return next(err);
+    }
+});
+router.put('/approvelive/:id',passport.authenticate('jwtAdmin', { session: false }), async (req, res, next) => {
+    try {
+        //zoomapi code here
+        const filter = { _id : req.params.id }
+        const update = { approved: true }
+        await LiveClassModel.updateOne(filter, update)
+        res.json({ message: "success"});
+    }
+    catch (err) {
+        console.log(err)
+        return next(err);
+    }
+});
+
+
 
 module.exports = router;
