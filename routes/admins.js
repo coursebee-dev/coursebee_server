@@ -67,7 +67,7 @@ router.get('/profile', passport.authenticate('jwtAdmin', { session: false }), (r
 
 router.get('/allStudents',passport.authenticate('jwtAdmin', { session: false }), async (req,res,next) =>{
     try{
-        const allStudents = await StudentModel.find({});
+        const allStudents = await StudentModel.find({},'_id name email institution subject');
         res.json(allStudents);
     } catch(err) {
         return next(err)
@@ -77,10 +77,10 @@ router.get('/allStudents',passport.authenticate('jwtAdmin', { session: false }),
 router.get('/allMentors',passport.authenticate('jwtAdmin', { session: false }), async (req,res,next) =>{
     try{
         const allMentors = await MentorModel.find({},'_id name email organization position mobileNo adminVerify');
-        console.log(allMentors)
+        //console.log(allMentors)
         res.json(allMentors);
     } catch(err) {
-        console.log(err)
+        //console.log(err)
         return next(err)
     } 
 });

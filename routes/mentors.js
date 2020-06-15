@@ -3,7 +3,8 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const validateRegisterInput = require("../validation/mentorRegister");
-const validateLoginInput = require("../validation/login");// Load User model
+const validateLoginInput = require("../validation/login");
+const validateLiveSchedule = require("../validation/liveSchedule");
 const MentorModel = require("../models/Mentor")
 const LiveClassModel = require("../models/LiveClass")
 
@@ -63,7 +64,13 @@ router.get('/profile', passport.authenticate('jwtMentor', { session: false }), (
 });
 
 router.post('/scheduleclass/:id', passport.authenticate('jwtMentor', { session: false }), async (req, res, next) => {
+
     try {
+        const { errors, isValid } = validateLiveSchedule(req.body);
+        // Check validation
+        if (!isValid) {
+            return next(errors);
+        }
         //console.log(req.params.id)
         await LiveClassModel.create(req.body);
         //console.log(liveClass)
@@ -75,14 +82,14 @@ router.post('/scheduleclass/:id', passport.authenticate('jwtMentor', { session: 
     }
 });
 
-router.get('/liveclass/:id',passport.authenticate('jwtMentor', { session: false }), async (req, res, next) => {
+router.get('/liveclass/:id', passport.authenticate('jwtMentor', { session: false }), async (req, res, next) => {
     try {
-        const liveClass = await LiveClassModel.find({mentorId:req.params.id})
-        console.log(liveClass)
+        const liveClass = await LiveClassModel.find({ mentorId: req.params.id })
+        //console.log(liveClass)
         res.json(liveClass)
     }
     catch (err) {
-        console.log(err)
+        //console.log(err)
         return next(err);
     }
 });
