@@ -1,6 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const axios = require('axios')
 const router = express.Router();
 const validateRegisterInput = require("../validation/studentRegister");
 const validateLoginInput = require("../validation/login");// Load User model
@@ -80,9 +81,10 @@ router.get('/approvedliveclass', async (req, res, next) => {
 router.post('/registerLiveClass/:id/:mtid', passport.authenticate('jwt', { session: false }),  async (req,res,next) =>{
     try {
         const {name,email} = await StudentModel.findOne({_id: req.params.id})
+        let meetingid = req.params.mtid
         var config = {
             method: 'post',
-            url: `https://api.zoom.us/v2/meetings/${req.params.mtid}/registrants`,
+            url: `https://api.zoom.us/v2/meetings/${meetingid}/registrants`,
             headers: { 
               'authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6InJPZzQ0ZDdKUlR1TnNmbjVwV1AtSEEiLCJleHAiOjE3NjcyMDM5NDAsImlhdCI6MTU5MTc5MDQyMX0.68SIEXcYZYpFOQ2grYWuECsk0PUPMPiGD8riFreCZm0', 
               'content-type': 'application/json'
@@ -93,10 +95,9 @@ router.post('/registerLiveClass/:id/:mtid', passport.authenticate('jwt', { sessi
             }
           }
         const {data} = await axios(config)
-        console.log(data)
         const registrants = await StudentModel.findById(req.params.id)
         await registrants.meetings.push({
-            meetingid: req.params.mtid,
+            meetingid: meetingid,
             joinurl: data.join_url
         })
         await registrants.save()
