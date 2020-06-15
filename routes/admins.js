@@ -1,6 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const axios = require('axios');
 const router = express.Router();
 const validateRegisterInput = require("../validation/adminRegister");
 const validateLoginInput = require("../validation/login");// Load User model
@@ -8,6 +9,54 @@ const StudentModel = require('../models/Student')
 const MentorModel = require("../models/Mentor")
 const LiveClassModel = require("../models/LiveClass")
 
+const createLiveClass = async (liveclassid,res)=>{
+    try {
+        const {topic,start_time,duration,password,agenda} = await LiveClassModel.findById(liveclassid);
+
+    
+        let config = {
+            method: 'post',
+            url: 'https://api.zoom.us/v2/users/russ.iut03@gmail.com/meetings',
+            headers: { 
+            'authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6InJPZzQ0ZDdKUlR1TnNmbjVwV1AtSEEiLCJleHAiOjE3NjcyMDM5NDAsImlhdCI6MTU5MTc5MDQyMX0.68SIEXcYZYpFOQ2grYWuECsk0PUPMPiGD8riFreCZm0', 
+            'content-type': 'application/json'
+            },
+            data : {
+            "topic": topic,
+            "type": 2,
+            "start_time": start_time,
+            "duration": duration,
+            "timezone": "Asia/Dhaka",
+            "password": password,
+            "agenda": agenda,
+            "settings": {
+                "host_video": true,
+                "participant_video": false,
+                "cn_meeting": false,
+                "in_meeting": false,
+                "join_before_host": true,
+                "mute_upon_entry": false,
+                "watermark": false,
+                "use_pmi": false,
+                "approval_type": 0,
+                "registration_type": 2,
+                "audio": "string",
+                "auto_recording": true,
+                "enforce_login": true,
+                "alternative_hosts": "",
+                "registrants_email_notification": true
+            }
+            }
+        }
+
+        const {data} = await axios(config)
+        await LiveClassModel.updateOne({ _id : liveclassid },{ meetingid : data.id })
+        console.log(data)
+        res.send({ message: "success"})
+    } catch (error) {
+        res.send(error)
+    }
+}
 
 router.post('/register', async (req, res, next) => {
     // const { errors, isValid } = validateRegisterInput(req.body);
@@ -116,13 +165,15 @@ router.get('/allliveclass',passport.authenticate('jwtAdmin', { session: false })
         return next(err);
     }
 });
+
+
+
 router.put('/approvelive/:id',passport.authenticate('jwtAdmin', { session: false }), async (req, res, next) => {
     try {
         //zoomapi code here
         const filter = { _id : req.params.id }
         const update = { approved: true }
-        await LiveClassModel.updateOne(filter, update)
-        res.json({ message: "success"});
+        await LiveClassModel.updateOne(filter, update,createLiveClass(req.params.id,res))
     }
     catch (err) {
         console.log(err)

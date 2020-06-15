@@ -39,6 +39,10 @@ const LiveClass = new Schema({
     approved: {
         type: Boolean,
         default: false
+    },
+    meetingid: {
+        type: String,
+        default: ""
     }
 })
 
