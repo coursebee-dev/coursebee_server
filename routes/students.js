@@ -5,6 +5,9 @@ const router = express.Router();
 const validateRegisterInput = require("../validation/studentRegister");
 const validateLoginInput = require("../validation/login");// Load User model
 const LiveClassModel = require("../models/LiveClass")
+const StudentModel = require('../models/Student');
+const { default: Axios } = require('axios');
+const { updateOne } = require('../models/LiveClass');
 
 router.post('/register', async (req, res, next) => {
     // const { errors, isValid } = validateRegisterInput(req.body);
@@ -73,5 +76,34 @@ router.get('/approvedliveclass', async (req, res, next) => {
         return next(err);
     }
 });
+
+router.post('/registerLiveClass/:id/:mtid', passport.authenticate('jwt', { session: false }),  async (req,res,next) =>{
+    try {
+        const {name,email} = await StudentModel.findOne({_id: req.params.id})
+        var config = {
+            method: 'post',
+            url: `https://api.zoom.us/v2/meetings/${req.params.mtid}/registrants`,
+            headers: { 
+              'authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6InJPZzQ0ZDdKUlR1TnNmbjVwV1AtSEEiLCJleHAiOjE3NjcyMDM5NDAsImlhdCI6MTU5MTc5MDQyMX0.68SIEXcYZYpFOQ2grYWuECsk0PUPMPiGD8riFreCZm0', 
+              'content-type': 'application/json'
+            },
+            data : {
+                "email": email,
+                "first_name": name
+            }
+          }
+        const {data} = await axios(config)
+        console.log(data)
+        const registrants = await StudentModel.findById(req.params.id)
+        await registrants.meetings.push({
+            meetingid: req.params.mtid,
+            joinurl: data.join_url
+        })
+        await registrants.save()
+        res.json({message: 'Successfully registered', success: true})
+    } catch (error) {
+        res.json(error)
+    }
+})
 
 module.exports = router;
