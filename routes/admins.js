@@ -168,7 +168,7 @@ router.get('/allliveclass',passport.authenticate('jwtAdmin', { session: false })
 
 
 
-router.put('/approvelive/:id',passport.authenticate('jwtAdmin', { session: false }), async (req, res, next) => {
+router.put('/approvelive/:id', passport.authenticate('jwtAdmin', { session: false }), async (req, res, next) => {
     try {
         //zoomapi code here
         const filter = { _id : req.params.id }
