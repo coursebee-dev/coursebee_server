@@ -7,8 +7,7 @@ const validateRegisterInput = require("../validation/studentRegister");
 const validateLoginInput = require("../validation/login");// Load User model
 const LiveClassModel = require("../models/LiveClass")
 const StudentModel = require('../models/Student');
-const { default: Axios } = require('axios');
-const { updateOne } = require('../models/LiveClass');
+const nodemailer = require("nodemailer");
 
 router.post('/register', async (req, res, next) => {
     // const { errors, isValid } = validateRegisterInput(req.body);
@@ -78,13 +77,42 @@ router.get('/approvedliveclass', async (req, res, next) => {
     }
 });
 
-router.post('/registerLiveClass/', passport.authenticate('jwt', { session: false }),  async (req,res,next) =>{
+router.post('/registerliveclass/:studentid', passport.authenticate('jwt', { session: false }),  async (req,res,next) =>{
     try {
-        
-        res.json({message: 'Successfully registered', success: true})
+        console.log("hello")
+        const transporter = nodemailer.createTransport({
+            service: "Gmail",
+            auth: {
+                user: `${process.env.GMAIL_USER}`,
+                pass: `${process.env.GMAIL_PASS}`
+            }
+        });
+        //const payload = { email: req.query.email, type: req.query.type };// Sign token
+        //const token = jwt.sign(payload, process.env.EMAIL_SECRET, { expiresIn: 2678400 /* 1 month in seconds*/ });
+        const link = "https://meet.jit.si/CoursebeeJitsiMeetAPIExample";
+        //console.log(link)
+        const mailOptions = {
+            //to: req.query.email,
+            to: `${process.env.GMAIL_USER}`,
+            subject: "Join Live Class Coursebee",
+            html: "Hello,<br> Please Click on the link at the scheduled time to join the live class.<br><a href=" + link + ">Join Now</a>"
+        }
+        //console.log(mailOptions);
+        const info = await transporter.sendMail(mailOptions);
+        console.log("accepted by " + info.accepted);
+        res.json({message: 'Successfully registered class link sent to email', success: true})
     } catch (error) {
-        res.json(error)
+        next(error)
     }
 })
+
+router.get('/joinliveclass/:topic',async (req, res) => {
+    try {
+        res.redirect("https://meet.jit.si/CoursebeeJitsiMeetAPIExample")
+    }
+    catch(err){
+        next(err)
+    }
+});
 
 module.exports = router;

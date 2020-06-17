@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 const validateRegisterInput = require("../validation/mentorRegister");
 const validateLoginInput = require("../validation/login");
-const validateLiveSchedule = require("../validation/liveSchedule");
 const MentorModel = require("../models/Mentor")
 const LiveClassModel = require("../models/LiveClass")
 
@@ -66,12 +65,7 @@ router.get('/profile', passport.authenticate('jwtMentor', { session: false }), (
 router.post('/scheduleclass/:id', passport.authenticate('jwtMentor', { session: false }), async (req, res, next) => {
 
     try {
-        const { errors, isValid } = validateLiveSchedule(req.body);
-        // Check validation
-        if (!isValid) {
-            return next(errors);
-        }
-        //console.log(req.params.id)
+        //console.log(req.body)
         await LiveClassModel.create(req.body);
         //console.log(liveClass)
         res.json({ message: 'success' })
