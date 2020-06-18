@@ -77,9 +77,15 @@ router.get('/approvedliveclass', async (req, res, next) => {
     }
 });
 
-router.post('/registerliveclass/:studentid', passport.authenticate('jwt', { session: false }),  async (req,res,next) =>{
+router.post('/registerliveclass/:studentid/:lclassid', passport.authenticate('jwt', { session: false }),  async (req,res,next) =>{
     try {
-        console.log("hello")
+
+        let participants = {
+            studentId: req.params.studentid
+        }
+
+        await LiveClassModel.findOneAndUpdate({_id: req.params.lclassid},{$push: {participants : participants}})
+
         const transporter = nodemailer.createTransport({
             service: "Gmail",
             auth: {
@@ -98,12 +104,17 @@ router.post('/registerliveclass/:studentid', passport.authenticate('jwt', { sess
             html: "Hello,<br> Please Click on the link at the scheduled time to join the live class.<br><a href=" + link + ">Join Now</a>"
         }
         //console.log(mailOptions);
-        const info = await transporter.sendMail(mailOptions);
+        //const info = await transporter.sendMail(mailOptions);
         console.log("accepted by " + info.accepted);
         res.json({message: 'Successfully registered class link sent to email', success: true})
     } catch (error) {
         next(error)
     }
+})
+
+router.get('/myliveclass/:id', async (req,res) => {
+    const myliveclasses = await LiveClassModel.find({"participants.studentId": req.params.id})
+    res.send(myliveclasses)
 })
 
 router.get('/joinliveclass/:topic',async (req, res) => {

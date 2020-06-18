@@ -16,7 +16,7 @@ const LiveClass = new Schema({
         required: true
     },
     start_time: {
-        type: String,
+        type: Date,
         required: true
     },
     duration: {
@@ -26,6 +26,10 @@ const LiveClass = new Schema({
     approved: {
         type: Boolean,
         default: false
+    },
+    created: {
+        type: Date,
+        default: Date.now
     },
     participants:[
         {
