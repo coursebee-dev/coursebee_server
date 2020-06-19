@@ -78,15 +78,18 @@ router.get('/approvedliveclass', async (req, res, next) => {
 
 router.post('/registerliveclass/:studentid/:classid', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
     try {
-        await LiveClassModel.findOneAndUpdate({ _id: req.params.classid }, { $push: { "participants.studentId": req.params.studentid } })
+        const participants = {
+            studentId: req.params.studentid
+        }
+        await LiveClassModel.findOneAndUpdate({ _id: req.params.classid }, { $push: { participants: participants } })
         res.json({ message: 'Successfully registered', success: true })
     } catch (error) {
-        //console.log(error)
+        console.log(error)
         next(error)
     }
 })
 
-router.get('/myliveclass/:id', async (req, res) => {
+router.get('/myliveclass/:id',passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const myliveclasses = await LiveClassModel.find({ "participants.studentId": req.params.id })
         res.json(myliveclasses)
@@ -96,7 +99,7 @@ router.get('/myliveclass/:id', async (req, res) => {
     }
 })
 
-router.get('/joinliveclass/:studentid/:classid', async (req, res, next) => {
+router.get('/joinliveclass/:studentid/:classid',passport.authenticate('jwt', { session: false }), async (req, res, next) => {
     try {
         const found = await LiveClassModel.findOne({ _id: req.params.classid, "participants.studentId": req.params.studentid })
         if (!found) res.json({ message: "Not Authorized", success: false })
