@@ -7,7 +7,6 @@ const validateRegisterInput = require("../validation/studentRegister");
 const validateLoginInput = require("../validation/login");// Load User model
 const LiveClassModel = require("../models/LiveClass")
 const StudentModel = require('../models/Student');
-const nodemailer = require("nodemailer");
 
 router.post('/register', async (req, res, next) => {
     // const { errors, isValid } = validateRegisterInput(req.body);
@@ -67,7 +66,7 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
 
 router.get('/approvedliveclass', async (req, res, next) => {
     try {
-        const liveClass = await LiveClassModel.find({approved:true})
+        const liveClass = await LiveClassModel.find({ approved: true })
         //console.log(liveClass)
         res.json(liveClass)
     }
@@ -77,51 +76,33 @@ router.get('/approvedliveclass', async (req, res, next) => {
     }
 });
 
-router.post('/registerliveclass/:studentid/:lclassid', passport.authenticate('jwt', { session: false }),  async (req,res,next) =>{
+router.post('/registerliveclass/:studentid/:classid', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
     try {
-
-        let participants = {
-            studentId: req.params.studentid
-        }
-
-        await LiveClassModel.findOneAndUpdate({_id: req.params.lclassid},{$push: {participants : participants}})
-
-        const transporter = nodemailer.createTransport({
-            service: "Gmail",
-            auth: {
-                user: `${process.env.GMAIL_USER}`,
-                pass: `${process.env.GMAIL_PASS}`
-            }
-        });
-        //const payload = { email: req.query.email, type: req.query.type };// Sign token
-        //const token = jwt.sign(payload, process.env.EMAIL_SECRET, { expiresIn: 2678400 /* 1 month in seconds*/ });
-        const link = "https://meet.jit.si/CoursebeeJitsiMeetAPIExample";
-        //console.log(link)
-        const mailOptions = {
-            //to: req.query.email,
-            to: `${process.env.GMAIL_USER}`,
-            subject: "Join Live Class Coursebee",
-            html: "Hello,<br> Please Click on the link at the scheduled time to join the live class.<br><a href=" + link + ">Join Now</a>"
-        }
-        //console.log(mailOptions);
-        //const info = await transporter.sendMail(mailOptions);
-        console.log("accepted by " + info.accepted);
-        res.json({message: 'Successfully registered class link sent to email', success: true})
+        await LiveClassModel.findOneAndUpdate({ _id: req.params.classid }, { $push: { "participants.studentId": req.params.studentid } })
+        res.json({ message: 'Successfully registered', success: true })
     } catch (error) {
+        //console.log(error)
         next(error)
     }
 })
 
-router.get('/myliveclass/:id', async (req,res) => {
-    const myliveclasses = await LiveClassModel.find({"participants.studentId": req.params.id})
-    res.send(myliveclasses)
+router.get('/myliveclass/:id', async (req, res) => {
+    try {
+        const myliveclasses = await LiveClassModel.find({ "participants.studentId": req.params.id })
+        res.json(myliveclasses)
+    }
+    catch (err) {
+        next(err)
+    }
 })
 
-router.get('/joinliveclass/:topic',async (req, res) => {
+router.get('/joinliveclass/:studentid/:classid', async (req, res, next) => {
     try {
-        res.redirect("https://meet.jit.si/CoursebeeJitsiMeetAPIExample")
+        const found = await LiveClassModel.findOne({ _id: req.params.classid, "participants.studentId": req.params.studentid })
+        if (!found) res.json({ message: "Not Authorized", success: false })
+        else res.json({ message: 'Authization Complete', success: true })
     }
-    catch(err){
+    catch (err) {
         next(err)
     }
 });

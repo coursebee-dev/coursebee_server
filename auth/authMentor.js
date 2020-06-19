@@ -9,9 +9,8 @@ passport.use('registerMentor', new localStrategy({
   passwordField: 'password',
   passReqToCallback: true
 }, async (req, email, password, done) => {
-  console.log("In user");
   try {
-    console.log(req.body);
+    console.log("Mentor Registered: " + email);
     const name = req.body.name;
     const mobileNo = req.body.mobileNo
     const organization = req.body.organization
@@ -47,7 +46,7 @@ passport.use('loginMentor', new localStrategy({
     }
     return done(null, user, { message: 'Logged in Successfully' });
   } catch (error) {
-    console.log("hello");
+    console.log(error.msg)
     return done(error);
   }
 }));
@@ -66,7 +65,7 @@ passport.use('jwtMentor', new JWTstrategy({
     //Pass the user details to the next middleware
     return done(null, token);
   } catch (error) {
-    console.log(error)
+    console.log(error.msg)
     done(error);
   }
 }));

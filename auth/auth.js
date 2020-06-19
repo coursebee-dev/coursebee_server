@@ -9,9 +9,8 @@ passport.use('register', new localStrategy({
   passwordField: 'password',
   passReqToCallback: true
 }, async (req, email, password, done) => {
-  console.log("In user");
   try {
-    console.log(req.body);
+    console.log("Student Registered: " + email);
     const name = req.body.name;
     const institution = req.body.institution;
     const subject = req.body.subject;
@@ -45,7 +44,6 @@ passport.use('login', new localStrategy({
     }
     return done(null, user, { message: 'Logged in Successfully' });
   } catch (error) {
-    console.log("hello");
     return done(error);
   }
 }));
@@ -64,7 +62,7 @@ passport.use('jwt', new JWTstrategy({
     //Pass the user details to the next middleware
     return done(null, token);
   } catch (error) {
-    console.log(error)
+    //console.log(error)
     done(error);
   }
 }));
