@@ -122,8 +122,9 @@ router.get('/allliveclass',passport.authenticate('jwtAdmin', { session: false })
 router.put('/approvelive/:id', passport.authenticate('jwtAdmin', { session: false }), async (req, res, next) => {
     try {
         const filter = { _id : req.params.id }
-        const update = { approved: true }
+        const update = { approved: true}
         await LiveClassModel.updateOne(filter, update)
+        res.json({ message: "success"});
     }
     catch (err) {
         console.log(err)

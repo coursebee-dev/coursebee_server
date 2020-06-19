@@ -81,15 +81,19 @@ router.post('/registerliveclass/:studentid/:classid', passport.authenticate('jwt
         const participants = {
             studentId: req.params.studentid
         }
-        await LiveClassModel.findOneAndUpdate({ _id: req.params.classid }, { $push: { participants: participants } })
-        res.json({ message: 'Successfully registered', success: true })
+        if (await LiveClassModel.findOne({ _id: req.params.classid, "participants.studentId": req.params.studentid })) {
+            res.json({ message: 'Already registered', success: true })
+        } else {
+            await LiveClassModel.updateOne({ _id: req.params.classid }, { $push: { participants: participants } })
+            res.json({ message: 'Successfully registered', success: true })
+        }
     } catch (error) {
         console.log(error)
         next(error)
     }
 })
 
-router.get('/myliveclass/:id',passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.get('/myliveclass/:id', passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
         const myliveclasses = await LiveClassModel.find({ "participants.studentId": req.params.id })
         res.json(myliveclasses)
@@ -99,10 +103,12 @@ router.get('/myliveclass/:id',passport.authenticate('jwt', { session: false }), 
     }
 })
 
-router.get('/joinliveclass/:studentid/:classid',passport.authenticate('jwt', { session: false }), async (req, res, next) => {
+router.get('/joinliveclass/:studentid/:classid', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
     try {
+
         const found = await LiveClassModel.findOne({ _id: req.params.classid, "participants.studentId": req.params.studentid })
         if (!found) res.json({ message: "Not Authorized", success: false })
+        else if (new Date(found.start_time) > new Date()) res.json({ message: "Please Wait Until Scheduled Time", success: false })
         else res.json({ message: 'Authization Complete', success: true })
     }
     catch (err) {
