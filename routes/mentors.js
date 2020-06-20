@@ -8,11 +8,11 @@ const MentorModel = require("../models/Mentor")
 const LiveClassModel = require("../models/LiveClass")
 
 router.post('/register', async (req, res, next) => {
-    // const { errors, isValid } = validateRegisterInput(req.body);
-    // // Check validation
-    // if (!isValid) {
-    //     return next(errors);
-    // }
+    const { errors, isValid } = validateRegisterInput(req.body);
+    // Check validation
+    if (!isValid) {
+        return next(errors);
+    }
     passport.authenticate('registerMentor', async (err, user, info) => {
         try {
             if (err || !user) {
@@ -28,10 +28,10 @@ router.post('/register', async (req, res, next) => {
 
 
 router.post('/login', async (req, res, next) => {
-    // const { errors, isValid } = validateLoginInput(req.body);// Check validation
-    // if (!isValid) {
-    //     return next(errors);
-    // } 
+    const { errors, isValid } = validateLoginInput(req.body);// Check validation
+    if (!isValid) {
+        return next(errors);
+    } 
     passport.authenticate('loginMentor', async (err, user, info) => {
         try {
             if (err || !user) {

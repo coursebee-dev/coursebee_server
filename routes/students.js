@@ -9,11 +9,11 @@ const LiveClassModel = require("../models/LiveClass")
 const StudentModel = require('../models/Student');
 
 router.post('/register', async (req, res, next) => {
-    // const { errors, isValid } = validateRegisterInput(req.body);
-    // // Check validation
-    // if (!isValid) {
-    //     return next(errors);
-    // }
+    const { errors, isValid } = validateRegisterInput(req.body);
+    // Check validation
+    if (!isValid) {
+        return next(errors);
+    }
     passport.authenticate('register', async (err, user, info) => {
         try {
             if (err || !user) {
@@ -29,10 +29,10 @@ router.post('/register', async (req, res, next) => {
 
 
 router.post('/login', async (req, res, next) => {
-    // const { errors, isValid } = validateLoginInput(req.body);// Check validation
-    // if (!isValid) {
-    //     return next(errors);
-    // }
+    const { errors, isValid } = validateLoginInput(req.body);// Check validation
+    if (!isValid) {
+        return next(errors);
+    }
     passport.authenticate('login', async (err, user, info) => {
         try {
             if (err || !user) {
