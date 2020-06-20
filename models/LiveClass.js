@@ -27,6 +27,9 @@ const LiveClass = new Schema({
         type: Boolean,
         default: false
     },
+    description: {
+        type: String,
+    },
     created: {
         type: Date,
         default: Date.now
