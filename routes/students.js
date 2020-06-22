@@ -2,6 +2,13 @@ const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const axios = require('axios')
+const SSLCommerz = require('sslcommerz-nodejs');
+let sslsettings = {
+    isSandboxMode: true, //false if live version
+    store_id: "kerne5eecca7eecc59",
+    store_passwd: "kerne5eecca7eecc59@ssl"
+}
+
 const router = express.Router();
 const validateRegisterInput = require("../validation/studentRegister");
 const validateLoginInput = require("../validation/login");// Load User model
@@ -81,11 +88,23 @@ router.post('/registerliveclass/:studentid/:classid', passport.authenticate('jwt
         const participants = {
             studentId: req.params.studentid
         }
-        if (await LiveClassModel.findOne({ _id: req.params.classid, "participants.studentId": req.params.studentid })) {
-            res.json({ message: 'Already registered', success: true })
-        } else {
+
+        const registerUser = async () => {
             await LiveClassModel.updateOne({ _id: req.params.classid }, { $push: { participants: participants } })
             res.json({ message: 'Successfully registered', success: true })
+        }
+
+        const targetLiveClass = await LiveClassModel.findOne({ _id: req.params.classid })
+        console.log(targetLiveClass)
+
+        if (await LiveClassModel.findOne({ _id: req.params.classid, "participants.studentId": req.params.studentid })) {
+            res.json({ message: 'Already registered', success: true })
+        } else if(targetLiveClass.class_type==='Paid') {
+            let sslcommerz = new SSLCommerz(sslsettings);
+            registerUser()
+        } else {
+            await LiveClassModel.updateOne({ _id: req.params.classid }, { $push: { participants: participants } })
+            res.json({ message: 'Successfully registered', success: true }) 
         }
     } catch (error) {
         console.log(error)

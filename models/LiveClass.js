@@ -34,6 +34,9 @@ const LiveClass = new Schema({
         type: Date,
         default: Date.now
     },
+    price: {
+        type: Number,
+    },
     participants:[
         {
             studentId:{
