@@ -66,8 +66,7 @@ router.post('/scheduleclass/:id', passport.authenticate('jwtMentor', { session: 
 
     try {
         //console.log(req.body)
-        const payload = await LiveClassModel.create(req.body);
-        console.log(payload)
+        await LiveClassModel.create(req.body);
         //console.log(liveClass)
         res.json({ message: 'success' })
     }
