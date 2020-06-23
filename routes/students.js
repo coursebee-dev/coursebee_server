@@ -103,8 +103,7 @@ router.post('/registerliveclass/:studentid/:classid', passport.authenticate('jwt
             let sslcommerz = new SSLCommerz(sslsettings);
             registerUser()
         } else {
-            await LiveClassModel.updateOne({ _id: req.params.classid }, { $push: { participants: participants } })
-            res.json({ message: 'Successfully registered', success: true }) 
+            registerUser()
         }
     } catch (error) {
         console.log(error)

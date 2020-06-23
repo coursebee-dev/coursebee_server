@@ -36,6 +36,7 @@ const LiveClass = new Schema({
     },
     price: {
         type: Number,
+        default: 0
     },
     participants:[
         {
