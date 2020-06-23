@@ -95,13 +95,37 @@ router.post('/registerliveclass/:studentid/:classid', passport.authenticate('jwt
         }
 
         const targetLiveClass = await LiveClassModel.findOne({ _id: req.params.classid })
-        console.log(targetLiveClass)
+            
+        const targetStudent = await StudentModel.findOne({ _id: req.params.studentid })
 
         if (await LiveClassModel.findOne({ _id: req.params.classid, "participants.studentId": req.params.studentid })) {
             res.json({ message: 'Already registered', success: true })
         } else if(targetLiveClass.class_type==='Paid') {
             let sslcommerz = new SSLCommerz(sslsettings);
-            registerUser()
+            let post_body = {};
+            post_body['total_amount'] = targetLiveClass.price;
+            post_body['currency'] = "BDT";
+            post_body['tran_id'] = `${req.params.studentid+req.params.classid}`;
+            post_body['success_url'] = "https://www.coursebee.com/success";
+            post_body['fail_url'] = "https://www.coursebee.com/failed";
+            post_body['cancel_url'] = "https://www.coursebee.com/cancel";
+            post_body['emi_option'] = 0;
+            post_body['cus_name'] = `${targetStudent.name}`;
+            post_body['cus_email'] = `${targetStudent.email}`;
+            post_body['cus_phone'] = "01700000000";
+            post_body['cus_add1'] = "customer address";
+            post_body['cus_city'] = "Dhaka";
+            post_body['cus_country'] = "Bangladesh";
+            post_body['shipping_method'] = "NO";
+            post_body['multi_card_name'] = ""
+            post_body['num_of_item'] = 1;
+            post_body['product_name'] = `${targetLiveClass.topic}`;
+            post_body['product_category'] = "Live Class Registration";
+            post_body['product_profile'] = "general";
+            const transaction = await sslcommerz.init_transaction(post_body)
+            console.log(transaction)
+            res.json(transaction)
+            //registerUser()
         } else {
             registerUser()
         }
