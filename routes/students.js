@@ -110,21 +110,21 @@ router.post('/registerliveclass/:studentid/:classid', passport.authenticate('jwt
             post_body['fail_url'] = "localhost:3000/failed";
             post_body['cancel_url'] = "localhost:3000/cancel";
             post_body['emi_option'] = 0;
+            post_body['cus_add1'] = "n/a";
             post_body['cus_name'] = `${targetStudent.name}`;
             post_body['cus_email'] = `${targetStudent.email}`;
-            post_body['cus_phone'] = "01700000000";
-            post_body['cus_add1'] = "customer address";
-            post_body['cus_city'] = "Dhaka";
-            post_body['cus_country'] = "Bangladesh";
+            post_body['cus_phone'] = `${req.body.phone}`;
+            post_body['cus_city'] = `${req.body.city}`;
+            post_body['cus_country'] = `${req.body.country}`;
             post_body['shipping_method'] = "NO";
-            post_body['multi_card_name'] = ""
             post_body['num_of_item'] = 1;
             post_body['product_name'] = `${targetLiveClass.topic}`;
             post_body['product_category'] = "Live Class Registration";
             post_body['product_profile'] = "non-physical-goods";
+            post_body['studentid'] = req.params.studentid;
+            post_body['classid'] = req.params.classid;
             const transaction = await sslcommerz.init_transaction(post_body)
-            res.json(transaction)
-            //registerUser()
+            res.send(transaction)
         } else {
             registerUser()
         }
@@ -158,8 +158,13 @@ router.get('/joinliveclass/:studentid/:classid', passport.authenticate('jwt', { 
 });
 
 router.post('/payment', async (req,res)=>{
-    console.log(req.body)
-    res.send(req)
+    let sslcommerz = new SSLCommerz(sslsettings);
+    const validation = await sslcommerz.validate_transaction_order(req.body.val_id)
+    if(validation.status === 200) {
+        // EVERYTHING WAS RIGHT DO WORK WITH YOUR SYSTEM NOW
+        console.log(req.body.amount+" tk recharged successfully");
+        }
+    console.log("success")
 })
 
 module.exports = router;
