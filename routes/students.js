@@ -106,9 +106,9 @@ router.post('/registerliveclass/:studentid/:classid', passport.authenticate('jwt
             post_body['total_amount'] = targetLiveClass.price;
             post_body['currency'] = "BDT";
             post_body['tran_id'] = `${req.params.studentid+req.params.classid}`;
-            post_body['success_url'] = "https://www.coursebee.com/success";
-            post_body['fail_url'] = "https://www.coursebee.com/failed";
-            post_body['cancel_url'] = "https://www.coursebee.com/cancel";
+            post_body['success_url'] = "localhost:3000/success";
+            post_body['fail_url'] = "localhost:3000/failed";
+            post_body['cancel_url'] = "localhost:3000/cancel";
             post_body['emi_option'] = 0;
             post_body['cus_name'] = `${targetStudent.name}`;
             post_body['cus_email'] = `${targetStudent.email}`;
@@ -121,9 +121,8 @@ router.post('/registerliveclass/:studentid/:classid', passport.authenticate('jwt
             post_body['num_of_item'] = 1;
             post_body['product_name'] = `${targetLiveClass.topic}`;
             post_body['product_category'] = "Live Class Registration";
-            post_body['product_profile'] = "general";
+            post_body['product_profile'] = "non-physical-goods";
             const transaction = await sslcommerz.init_transaction(post_body)
-            console.log(transaction)
             res.json(transaction)
             //registerUser()
         } else {
@@ -157,5 +156,10 @@ router.get('/joinliveclass/:studentid/:classid', passport.authenticate('jwt', { 
         next(err)
     }
 });
+
+router.post('/payment', async (req,res)=>{
+    console.log(req.body)
+    res.send(req)
+})
 
 module.exports = router;
