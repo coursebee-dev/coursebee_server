@@ -160,6 +160,7 @@ router.get('/joinliveclass/:studentid/:classid', passport.authenticate('jwt', { 
 router.post('/payment', async (req,res)=>{
     let sslcommerz = new SSLCommerz(sslsettings);
     const validation = await sslcommerz.validate_transaction_order(req.body.val_id)
+    console.log(validation.status)
     if(validation.status === 200) {
         // EVERYTHING WAS RIGHT DO WORK WITH YOUR SYSTEM NOW
         console.log(req.body.amount+" tk recharged successfully");
