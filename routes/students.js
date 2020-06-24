@@ -106,9 +106,9 @@ router.post('/registerliveclass/:studentid/:classid', passport.authenticate('jwt
             post_body['total_amount'] = targetLiveClass.price;
             post_body['currency'] = "BDT";
             post_body['tran_id'] = `${req.params.studentid+req.params.classid}`;
-            post_body['success_url'] = "localhost:3000/success";
-            post_body['fail_url'] = "localhost:3000/failed";
-            post_body['cancel_url'] = "localhost:3000/cancel";
+            post_body['success_url'] = "https://www.coursebee.com/success";
+            post_body['fail_url'] = "https://www.coursebee.com/failed";
+            post_body['cancel_url'] = "https://www.coursebee.com/cancel";
             post_body['emi_option'] = 0;
             post_body['cus_add1'] = "n/a";
             post_body['cus_name'] = `${targetStudent.name}`;
@@ -160,12 +160,11 @@ router.get('/joinliveclass/:studentid/:classid', passport.authenticate('jwt', { 
 router.post('/ipn_listener', async (req,res)=>{
     let sslcommerz = new SSLCommerz(sslsettings);
     const validation = await sslcommerz.validate_transaction_order(req.body.val_id)
-    console.log(validation.status)
-    if(validation.status === 200) {
+    console.log(validation)
+    if(validation.status === "VALID") {
         // EVERYTHING WAS RIGHT DO WORK WITH YOUR SYSTEM NOW
-        console.log(req.body.amount+" tk recharged successfully");
-        }
-    console.log("success")
+        console.log("success");
+    }
 })
 
 module.exports = router;
