@@ -121,8 +121,8 @@ router.post('/registerliveclass/:studentid/:classid', passport.authenticate('jwt
             post_body['product_name'] = `${targetLiveClass.topic}`;
             post_body['product_category'] = "Live Class Registration";
             post_body['product_profile'] = "non-physical-goods";
-            post_body['studentid'] = req.params.studentid;
-            post_body['classid'] = req.params.classid;
+            post_body['value_a'] = req.params.studentid;
+            post_body['value_b'] = req.params.classid;
             const transaction = await sslcommerz.init_transaction(post_body)
             res.send(transaction)
         } else {
