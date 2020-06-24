@@ -162,9 +162,14 @@ router.post('/ipn_listener', async (req,res)=>{
     const validation = await sslcommerz.validate_transaction_order(req.body.val_id)
     console.log(validation)
     if(validation.status === "VALID") {
-        // EVERYTHING WAS RIGHT DO WORK WITH YOUR SYSTEM NOW
+        const participants = {
+            studentId: verification.value_a,
+            transaction: verification.tran_id
+        }
         console.log("success");
-    }
+        await LiveClassModel.updateOne({ _id: validation.value_b }, { $push: { participants: participants } })
+            res.json({ message: 'Successfully registered', success: true })
+        }
 })
 
 module.exports = router;
