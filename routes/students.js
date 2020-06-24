@@ -157,7 +157,7 @@ router.get('/joinliveclass/:studentid/:classid', passport.authenticate('jwt', { 
     }
 });
 
-router.post('/payment', async (req,res)=>{
+router.post('/ipn_listener', async (req,res)=>{
     let sslcommerz = new SSLCommerz(sslsettings);
     const validation = await sslcommerz.validate_transaction_order(req.body.val_id)
     console.log(validation.status)
