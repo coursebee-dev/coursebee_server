@@ -164,8 +164,8 @@ router.post('/ipn_listener', async (req, res) => {
         console.log(validation)
         if (validation.status === "VALID") {
             const participants = {
-                studentId: verification.value_a,
-                transaction: verification.tran_id
+                studentId: value_a,
+                transaction: tran_id
             }
             await LiveClassModel.updateOne({ _id: validation.value_b }, { $push: { participants: participants } })
             res.json({ message: 'Successfully registered', success: true })
