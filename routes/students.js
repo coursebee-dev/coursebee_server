@@ -95,17 +95,17 @@ router.post('/registerliveclass/:studentid/:classid', passport.authenticate('jwt
         }
 
         const targetLiveClass = await LiveClassModel.findOne({ _id: req.params.classid })
-            
+
         const targetStudent = await StudentModel.findOne({ _id: req.params.studentid })
 
         if (await LiveClassModel.findOne({ _id: req.params.classid, "participants.studentId": req.params.studentid })) {
             res.json({ message: 'Already registered', success: true })
-        } else if(targetLiveClass.class_type==='Paid') {
+        } else if (targetLiveClass.class_type === 'Paid') {
             let sslcommerz = new SSLCommerz(sslsettings);
             let post_body = {};
             post_body['total_amount'] = targetLiveClass.price;
             post_body['currency'] = "BDT";
-            post_body['tran_id'] = `${req.params.studentid+req.params.classid}`;
+            post_body['tran_id'] = `${req.params.studentid + req.params.classid}`;
             post_body['success_url'] = "https://www.coursebee.com/success";
             post_body['fail_url'] = "https://www.coursebee.com/failed";
             post_body['cancel_url'] = "https://www.coursebee.com/cancel";
@@ -157,18 +157,24 @@ router.get('/joinliveclass/:studentid/:classid', passport.authenticate('jwt', { 
     }
 });
 
-router.post('/ipn_listener', async (req,res)=>{
-    let sslcommerz = new SSLCommerz(sslsettings);
-    const validation = await sslcommerz.validate_transaction_order(req.body.val_id)
-    console.log(validation)
-    if(validation.status === "VALID") {
-        const participants = {
-            studentId: verification.value_a,
-            transaction: verification.tran_id
-        }
-        LiveClassModel.updateOne({ _id: validation.value_b }, { $push: { participants: participants } })
+router.post('/ipn_listener', async (req, res) => {
+    try {
+        let sslcommerz = new SSLCommerz(sslsettings);
+        const validation = await sslcommerz.validate_transaction_order(req.body.val_id)
+        console.log(validation)
+        if (validation.status === "VALID") {
+            const participants = {
+                studentId: verification.value_a,
+                transaction: verification.tran_id
+            }
+            await LiveClassModel.updateOne({ _id: validation.value_b }, { $push: { participants: participants } })
             res.json({ message: 'Successfully registered', success: true })
         }
+    }
+    catch (err) {
+        console.log(err)
+        next(err)
+    }
 })
 
 module.exports = router;
