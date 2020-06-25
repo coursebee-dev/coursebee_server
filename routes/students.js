@@ -124,7 +124,11 @@ router.post('/registerliveclass/:studentid/:classid', passport.authenticate('jwt
             post_body['value_a'] = req.params.studentid;
             post_body['value_b'] = req.params.classid;
             const transaction = await sslcommerz.init_transaction(post_body)
-            res.send(transaction)
+            if (transaction.GatewayPageURL && transaction.GatewayPageURL !== "") {
+                res.json({ status: 'success', data: transaction.GatewayPageURL, logo: transaction.storeLogo })
+            } else {
+                res.json({ status: 'fail', data: null, logo: transaction.storeLogo, message: "JSON Data parsing error!" })
+            }
         } else {
             registerUser()
         }
