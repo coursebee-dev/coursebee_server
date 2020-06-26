@@ -89,11 +89,6 @@ router.post('/registerliveclass/:studentid/:classid', passport.authenticate('jwt
             studentId: req.params.studentid
         }
 
-        const registerUser = async () => {
-            await LiveClassModel.updateOne({ _id: req.params.classid }, { $push: { participants: participants } })
-            res.json({ message: 'Successfully registered', success: true })
-        }
-
         const targetLiveClass = await LiveClassModel.findOne({ _id: req.params.classid })
 
         const targetStudent = await StudentModel.findOne({ _id: req.params.studentid })
@@ -105,7 +100,7 @@ router.post('/registerliveclass/:studentid/:classid', passport.authenticate('jwt
             let post_body = {};
             post_body['total_amount'] = targetLiveClass.price;
             post_body['currency'] = "BDT";
-            post_body['tran_id'] = `${req.params.studentid + req.params.classid}`;
+            post_body['tran_id'] = `${req.params.studentid + req.params.classid + Date.now()}`;
             post_body['success_url'] = "https://www.coursebee.com/success";
             post_body['fail_url'] = "https://www.coursebee.com/failed";
             post_body['cancel_url'] = "https://www.coursebee.com/cancel";
@@ -130,7 +125,8 @@ router.post('/registerliveclass/:studentid/:classid', passport.authenticate('jwt
                 res.json({ status: 'fail', data: null, logo: transaction.storeLogo, message: "JSON Data parsing error!" })
             }
         } else {
-            registerUser()
+            await LiveClassModel.updateOne({ _id: req.params.classid }, { $push: { participants: participants } })
+            res.json({ message: 'Successfully registered', success: true })
         }
     } catch (error) {
         console.log(error)
@@ -165,7 +161,7 @@ router.post('/ipn_listener', async (req, res) => {
     try {
         let sslcommerz = new SSLCommerz(sslsettings);
         const validation = await sslcommerz.validate_transaction_order(req.body.val_id)
-        console.log(validation)
+        //console.log(validation)
         if (validation.status === "VALID") {
             const participants = {
                 studentId: validation.value_a,
