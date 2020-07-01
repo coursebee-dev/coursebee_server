@@ -144,6 +144,15 @@ router.get('/myliveclass/:id', passport.authenticate('jwt', { session: false }),
     }
 })
 
+router.get('/liveclassdetails/:id', async (req, res) => {
+    try {
+        const liveclass = await LiveClassModel.findOne({ _id: req.params.id })
+        res.json(liveclass)
+    } catch (error) {
+        res.json(error)
+    }
+})
+
 router.get('/joinliveclass/:studentid/:classid', passport.authenticate('jwt', { session: false }), async (req, res, next) => {
     try {
 
