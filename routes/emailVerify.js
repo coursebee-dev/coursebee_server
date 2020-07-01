@@ -30,8 +30,8 @@ router.get('/send', async (req, res) => {
             html: "Hello,<br> Please Click on the link to verify your email.<br><a href=" + link + ">Click here to verify</a>"
         }
         //console.log(mailOptions);
-        res.json({ message: "email sent"})
         const info = await transporter.sendMail(mailOptions);
+        res.json({ message: "email sent" })
         console.log("accepted by " + info.accepted);
     } catch (error) {
         console.log(error.message)
@@ -42,14 +42,14 @@ router.get('/send', async (req, res) => {
 router.get('/verify', async (req, res) => {
     try {
         const decoded = jwt.verify(req.query.token, process.env.EMAIL_SECRET)
-        if(decoded.type==="student"){
-            await Student.findOneAndUpdate({email:decoded.email}, {emailVerify: true} )
+        if (decoded.type === "student") {
+            await Student.findOneAndUpdate({ email: decoded.email }, { emailVerify: true })
             res.redirect("https://coursebee.com/login")
-        } else if(decoded.type==="mentor"){
-            await Mentor.findOneAndUpdate({email:decoded.email}, {emailVerify: true} )
+        } else if (decoded.type === "mentor") {
+            await Mentor.findOneAndUpdate({ email: decoded.email }, { emailVerify: true })
             res.redirect("https://coursebee.com/mentor/login")
-        } else if(decoded.type==="admin"){
-            await Admin.findOneAndUpdate({email:decoded.email}, {emailVerify: true} )
+        } else if (decoded.type === "admin") {
+            await Admin.findOneAndUpdate({ email: decoded.email }, { emailVerify: true })
             res.redirect("https://coursebee.com/admin/login")
         }
         res.redirect("https://coursebee.com")

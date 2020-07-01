@@ -36,7 +36,6 @@ router.post('/login', async (req, res, next) => {
     passport.authenticate('login', async (err, user, info) => {
         try {
             if (err || !user) {
-                console.log(info)
                 return res.status(400).json(info)
             }
             req.login(user, { session: false }, async (error) => {
@@ -100,6 +99,15 @@ router.get('/myliveclass/:id', passport.authenticate('jwt', { session: false }),
     }
     catch (err) {
         next(err)
+    }
+})
+
+router.get('/liveclassdetails/:id', async (req, res) => {
+    try {
+        const liveclass = await LiveClassModel.findOne({ _id: req.params.id })
+        res.json(liveclass)
+    } catch (error) {
+        res.json(error)
     }
 })
 
