@@ -29,9 +29,6 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  description: {
-    type: String,
-  },
   organization: {
     type: String,
     required: true
