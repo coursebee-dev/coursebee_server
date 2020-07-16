@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+const axios = require('axios')
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const validateRegisterInput = require("../validation/mentorRegister");
@@ -10,6 +11,7 @@ const LiveClassModel = require("../models/LiveClass")
 router.post('/register', async (req, res, next) => {
     const { errors, isValid } = validateRegisterInput(req.body);
     // Check validation
+    console.log(req.body)
     if (!isValid) {
         return next(errors);
     }
@@ -31,7 +33,7 @@ router.post('/login', async (req, res, next) => {
     const { errors, isValid } = validateLoginInput(req.body);// Check validation
     if (!isValid) {
         return next(errors);
-    } 
+    }
     passport.authenticate('loginMentor', async (err, user, info) => {
         try {
             if (err || !user) {
@@ -66,8 +68,10 @@ router.post('/scheduleclass/:id', passport.authenticate('jwtMentor', { session: 
 
     try {
         //console.log(req.body)
-        await LiveClassModel.create(req.body);
-        //console.log(liveClass)
+        // await LiveClassModel.create(req.body);
+        console.log(req.body)
+        const liveClass = new LiveClassModel(req.body)
+        liveClass.save()
         res.json({ message: 'success' })
     }
     catch (err) {
@@ -87,6 +91,38 @@ router.get('/liveclass/:id', passport.authenticate('jwtMentor', { session: false
         return next(err);
     }
 });
+
+router.get('/mentorinfo/:id', async (req, res) => {
+    try {
+        const mentor = await MentorModel.findOne({ _id: req.params.id })
+        console.log(mentor)
+        res.json({
+            name: mentor.name,
+            organization: mentor.organization,
+            position: mentor.position
+        })
+    } catch (error) {
+        res.json(error)
+    }
+})
+
+router.patch('/edit/:id', async (req, res) => {
+    try {
+        const mentor = await MentorModel.findOneAndUpdate({})
+    } catch (error) {
+        res.json(error)
+    }
+})
+
+router.post('/uploadimg/:mentorid', async (req, res) => {
+    try {
+        const mentor = await MentorModel.findOne({ _id: req.params.mentorid })
+        console.log(req.body)
+        res.json(req.body)
+    } catch (error) {
+        res.json(error)
+    }
+})
 
 
 module.exports = router;
