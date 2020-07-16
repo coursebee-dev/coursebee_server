@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;// Create Schema
 
 const LiveClass = new Schema({
-    mentorId:{
-        type:String,
-        required:true
+    mentorId: {
+        type: String,
+        required: true
     },
     topic: {
         type: String,
@@ -27,16 +27,24 @@ const LiveClass = new Schema({
         type: Boolean,
         default: false
     },
+    description: {
+        type: String,
+        required: true
+    },
     created: {
         type: Date,
         default: Date.now
     },
-    participants:[
+    price: {
+        type: Number,
+        default: 0
+    },
+    participants: [
         {
-            studentId:{
+            studentId: {
                 type: String,
                 required: true,
-                unique:true
+                unique: true
             }
         }
     ]
