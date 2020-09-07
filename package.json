@@ -4,9 +4,11 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "heroku-postbuild": "npm i --save",
     "start": "node server.js",
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "pstart": "pm2 start ecosystem.config.js --env production",
+    "prestart": "pm2 restart ecosystem.config.js --env production",
+    "dstart": "pm2 restart ecosystem.config.js --env production"
   },
   "author": "",
   "license": "ISC",
