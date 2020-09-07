@@ -19,12 +19,15 @@ router.post('/register', async (req, res, next) => {
         try {
             if (err || !user) {
                 console.log(info)
+                console.log(err)
                 return res.status(400).json(info)
             }
             return res.json({ id: user.id, name: user.name, email: user.email, emailVerify: user.emailVerify, adminVerify: user.adminVerify, type: "mentor" })
         } catch (error) {
+            console.log(error)
             return next(error);
         }
+        console.log("hi")
     })(req, res, next);
 });
 

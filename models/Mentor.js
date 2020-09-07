@@ -37,10 +37,7 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
-  interests: {
-    type: String,
-    required: false
-  },
+  interests: [],
   date: {
     type: Date,
     default: Date.now

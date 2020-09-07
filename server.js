@@ -36,4 +36,4 @@ app.use(function(err, req, res, next) {
 });
 
 const port = process.env.PORT || 5001;
-app.listen(port, () => console.log(`Server up and running on port ${port} !`));
+app.listen(port, () => console.log(`server up and running on port ${port} !`));
