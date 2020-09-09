@@ -19,6 +19,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static('../client/build'));
 }
 app.use(cors());
+app.use(express.json())
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))
 app.use("/api", students);
 app.use("/api/mentor", mentors);

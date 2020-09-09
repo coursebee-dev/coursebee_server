@@ -15,14 +15,26 @@ const LiveClass = new Schema({
         type: String,
         required: true
     },
-    start_time: {
+    start_date: {
         type: Date,
+    },
+    time: {
+        type: String,
         required: true
+    },
+    end_date: {
+        type: Date
     },
     duration: {
         type: Number,
         required: true
     },
+    academicExcellence: {
+        type: String
+    },
+    category: [],
+    subcategory: [],
+    classtime: [],
     approved: {
         type: Boolean,
         default: false
