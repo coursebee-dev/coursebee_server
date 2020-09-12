@@ -42,6 +42,9 @@ const LiveClass = new Schema({
     description: {
         type: String,
     },
+    class_schedule: {
+        type: String,
+    },
     created: {
         type: Date,
         default: Date.now
