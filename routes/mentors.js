@@ -7,6 +7,9 @@ const validateRegisterInput = require("../validation/mentorRegister");
 const validateLoginInput = require("../validation/login");
 const MentorModel = require("../models/Mentor")
 const LiveClassModel = require("../models/LiveClass")
+const { CategoryModel, SubCategoryModel } = require("../models/Category");
+const CourseModel = require('../models/Course');
+const { getVimeoAuthUrl } = require('../auth/vimeomentorauth')
 
 router.post('/register', async (req, res, next) => {
     const { errors, isValid } = validateRegisterInput(req.body);
@@ -109,7 +112,7 @@ router.get('/mentorinfo/:id', async (req, res) => {
     }
 })
 
-router.patch('/edit/:id', async (req, res) => {
+router.patch('/edit/:id', passport.authenticate('jwtMentor', { session: false }), async (req, res) => {
     try {
         const mentor = await MentorModel.findOneAndUpdate({})
     } catch (error) {
@@ -117,7 +120,7 @@ router.patch('/edit/:id', async (req, res) => {
     }
 })
 
-router.post('/uploadimg/:mentorid', async (req, res) => {
+router.post('/uploadimg/:mentorid', passport.authenticate('jwtMentor', { session: false }), async (req, res) => {
     try {
         const mentor = await MentorModel.findOne({ _id: req.params.mentorid })
         console.log(req.body)
@@ -127,5 +130,78 @@ router.post('/uploadimg/:mentorid', async (req, res) => {
     }
 })
 
+router.get('/category', async (req, res) => {
+    try {
+        const category = await CategoryModel.find();
+        res.send(category);
+    } catch (error) {
+        res.send(error.message)
+    }
+})
+
+router.post('/createcourse', passport.authenticate('jwtMentor', { session: false }), async (req, res) => {
+    try {
+        const course = new CourseModel(req.body)
+        await course.save()
+        res.json({ success: true, message: "success" })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+})
+
+router.get('/course', async (req, res) => {
+    try {
+        const courses = await CourseModel.find()
+        res.json({ success: true, courses: courses })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+})
+
+router.get('/getcourse/:id', async (req, res) => {
+    try {
+        const course = await CourseModel.findOne({ _id: req.params.id })
+        res.json({ success: true, course: course })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+})
+
+router.get('/vimeoauthurl', async (req, res) => {
+    try {
+        let url = getVimeoAuthUrl()
+        res.json({ success: true, url: url })
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+})
+
+router.put('/course/:id/addvideo', passport.authenticate('jwtMentor', { session: false }), async (req, res) => {
+    try {
+        await CourseModel.updateOne({ _id: req.params.id }, { $push: { contents: req.body } })
+        res.json({ success: true, message: 'Successfully added a course content' })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+})
+
+router.put('/course/:id/submit', passport.authenticate('jwtMentor', { session: false }), async (req, res) => {
+    try {
+        await CourseModel.updateOne({ _id: req.params.id }, { $set: { submitted: true } })
+        res.json({ success: true, message: 'Successfully submitted course for review.' })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+})
+
+router.put('/course/:id/changename', passport.authenticate('jwtMentor', { session: false }), async (req, res) => {
+    try {
+        await CourseModel.updateOne({ _id: req.params.id }, { $set: { name: req.body.coursename } })
+        res.json({ success: true, message: 'Successfully changed course name' })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+})
 
 module.exports = router;

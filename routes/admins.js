@@ -8,6 +8,7 @@ const validateLoginInput = require("../validation/login");// Load User model
 const StudentModel = require('../models/Student')
 const MentorModel = require("../models/Mentor")
 const LiveClassModel = require("../models/LiveClass")
+const CourseModel = require('../models/Course')
 const { CategoryModel, SubCategoryModel } = require("../models/Category");
 router.post('/register', async (req, res, next) => {
     const { errors, isValid } = validateRegisterInput(req.body);
@@ -163,6 +164,22 @@ router.post('/addsubcat/:id', async (req, res) => {
     }
 })
 
+router.get('/getcourse/:id', async (req, res) => {
+    try {
+        const course = await CourseModel.findOne({ _id: req.params.id })
+        res.json({ success: true, course: course })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+})
 
+router.put('/course/:id/approve', passport.authenticate('jwtAdmin', { session: false }), async (req, res) => {
+    try {
+        const course = await CourseModel.updateOne({ _id: req.params.id }, { $set: { approved: true } })
+        res.json({ success: true, message: "Approved course successfully" })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+})
 
 module.exports = router;

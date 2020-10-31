@@ -5,12 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "server": "nodemon server.js",
-    "pstart": "pm2 start ecosystem.config.js --env production",
-    "prestart": "pm2 restart ecosystem.config.js --env production",
-    "dstart": "pm2 restart ecosystem.config.js --env production"
+    "server": "nodemon server.js"
   },
-  "author": "",
+  "author": "njayman",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
@@ -27,7 +24,8 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "sslcommerz-nodejs": "^1.0.8",
-    "validator": "^13.0.0"
+    "validator": "^13.0.0",
+    "vimeo": "^2.1.1"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
