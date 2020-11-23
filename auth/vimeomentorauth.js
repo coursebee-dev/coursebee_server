@@ -1,11 +1,12 @@
 const Vimeo = require('vimeo').Vimeo;
-const { VIMEO_CLIENT_ID, VIMEO_CLIENT_SECRET } = process.env
+const { VIMEO_CLIENT_ID, VIMEO_CLIENT_SECRET, VIMEO_REDIRECT_URI } = process.env
 const client = new Vimeo(VIMEO_CLIENT_ID, VIMEO_CLIENT_SECRET);
 
 const scopes = ["private", "delete", "upload", "video_files", "create"]
-redirect_uri = "http://localhost:3000/mentor/dashboard/createcourse/"
-const getVimeoAuthUrl = () => {
-    var url = client.buildAuthorizationEndpoint(redirect_uri, scopes)
+redirect_uri = VIMEO_REDIRECT_URI;
+const getVimeoAuthUrl = async () => {
+    var url = await client.buildAuthorizationEndpoint(redirect_uri, scopes)
+    console.log(url)
     return url
 }
 
