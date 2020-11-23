@@ -10,7 +10,14 @@ const ContentSchema = new Schema({
     description: {
         type: String,
     },
-    videoobject: {}
+    videoobject: {},
+    finalLink: {
+        type: String
+    },
+    ready: {
+        type: Boolean,
+        default: null
+    }
 })
 
 const CourseSchema = new Schema({

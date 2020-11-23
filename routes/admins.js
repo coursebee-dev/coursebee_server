@@ -182,4 +182,31 @@ router.put('/course/:id/approve', passport.authenticate('jwtAdmin', { session: f
     }
 })
 
+router.put('/video/approve/:courseId/:contentId', passport.authenticate('jwtAdmin', { session: false }), async (req, res) => {
+    try {
+        await CourseModel.findOneAndUpdate({ "_id": req.params.courseId, 'contents._id': req.params.contentId }, { "$set": { "contents.$.ready": true } })
+        res.json({ success: true, message: 'Successfully approved content' })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+})
+
+router.put('/video/disapprove/:courseId/:contentId', passport.authenticate('jwtAdmin', { session: false }), async (req, res) => {
+    try {
+        await CourseModel.findOneAndUpdate({ "_id": req.params.courseId, 'contents._id': req.params.contentId }, { "$set": { "contents.$.ready": false } })
+        res.json({ success: true, message: 'Successfully disapproved content' })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+})
+
+router.put('/video/final/add/:courseId/:contentId', passport.authenticate('jwtMentor', { session: false }), async (req, res) => {
+    try {
+        await CourseModel.findOneAndUpdate({ "_id": req.params.courseId, 'contents._id': req.params.contentId }, { "$set": { "contents.$.finalLink": req.body.link } })
+        res.json({ success: true, message: 'Successfully set final content' })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+})
+
 module.exports = router;

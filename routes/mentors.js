@@ -1,6 +1,7 @@
 const express = require('express');
 const passport = require('passport');
-const axios = require('axios')
+//const axios = require('axios')
+
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const validateRegisterInput = require("../validation/mentorRegister");
@@ -30,7 +31,6 @@ router.post('/register', async (req, res, next) => {
             console.log(error)
             return next(error);
         }
-        console.log("hi")
     })(req, res, next);
 });
 
@@ -199,6 +199,25 @@ router.put('/course/:id/changename', passport.authenticate('jwtMentor', { sessio
     try {
         await CourseModel.updateOne({ _id: req.params.id }, { $set: { name: req.body.coursename } })
         res.json({ success: true, message: 'Successfully changed course name' })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+})
+
+router.put('/video/append/:courseId/:contentId', passport.authenticate('jwtMentor', { session: false }), async (req, res) => {
+    try {
+        console.log(req.body)
+        await CourseModel.findOneAndUpdate({ "_id": req.params.courseId, 'contents._id': req.params.contentId }, { "$set": { "contents.$.videoobject": req.body } })
+        res.json({ success: true, message: 'Successfully uploaded video' })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+})
+
+router.put('/video/delete/:courseId/:contentId', passport.authenticate('jwtMentor', { session: false }), async (req, res) => {
+    try {
+        await CourseModel.findOneAndUpdate({ "_id": req.params.courseId, 'contents._id': req.params.contentId }, { "$set": { "contents.$.videoobject": {} } })
+        res.json({ success: true, message: 'Successfully deleted content' })
     } catch (error) {
         res.json({ success: false, message: error.message })
     }
