@@ -2,10 +2,11 @@ const Vimeo = require('vimeo').Vimeo;
 const { VIMEO_CLIENT_ID, VIMEO_CLIENT_SECRET, VIMEO_REDIRECT_URI } = process.env
 const client = new Vimeo(VIMEO_CLIENT_ID, VIMEO_CLIENT_SECRET);
 
-const scopes = ["private", "delete", "upload", "video_files", "create"]
+const scopes = ["private", "public"]
 redirect_uri = VIMEO_REDIRECT_URI;
+const state = Math.random().toString(36).substring(7);
 const getVimeoAuthUrl = async () => {
-    var url = await client.buildAuthorizationEndpoint(redirect_uri, scopes)
+    var url = await client.buildAuthorizationEndpoint(redirect_uri, scopes, state)
     console.log(url)
     return url
 }
