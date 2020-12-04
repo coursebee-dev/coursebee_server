@@ -10,7 +10,6 @@ const getVimeoAuthUrl = async () => {
     console.log(url)
     return url
 }
-
 /*client.accessToken(code, redirect_uri, function (err, response) {
     if (err) {
         return response.end("error\n" + err);

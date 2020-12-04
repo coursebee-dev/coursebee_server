@@ -149,9 +149,9 @@ router.post('/createcourse', passport.authenticate('jwtMentor', { session: false
     }
 })
 
-router.get('/course', async (req, res) => {
+router.post('/course', async (req, res) => {
     try {
-        const courses = await CourseModel.find()
+        const courses = await CourseModel.find({ mentorId: req.body.mentorid })
         res.json({ success: true, courses: courses })
     } catch (error) {
         res.json({ success: false, message: error.message })
