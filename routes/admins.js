@@ -164,6 +164,15 @@ router.post('/addsubcat/:id', async (req, res) => {
     }
 })
 
+router.get('/get/courses/', async (req, res) => {
+    try {
+        const courses = await CourseModel.find()
+        res.json({ success: true, courses: courses })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+})
+
 router.get('/getcourse/:id', async (req, res) => {
     try {
         const course = await CourseModel.findOne({ _id: req.params.id })
@@ -195,6 +204,16 @@ router.put('/video/disapprove/:courseId/:contentId', passport.authenticate('jwtA
     try {
         await CourseModel.findOneAndUpdate({ "_id": req.params.courseId, 'contents._id': req.params.contentId }, { "$set": { "contents.$.ready": false } })
         res.json({ success: true, message: 'Successfully disapproved content' })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+})
+
+router.put('/video/setprice/:id', async (req, res) => {
+    try {
+        const data = await CourseModel.updateOne({ _id: req.params.id }, { $set: { price: Number(req.body.price) } })
+        //console.log(data)
+        res.json({ success: true, message: 'Successfully set price for video' })
     } catch (error) {
         res.json({ success: false, message: error.message })
     }

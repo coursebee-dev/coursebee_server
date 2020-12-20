@@ -38,6 +38,9 @@ const CourseSchema = new Schema({
         type: Boolean,
         default: false
     },
+    price: {
+        type: Number,
+    },
     submitted: {
         type: Boolean,
         default: false

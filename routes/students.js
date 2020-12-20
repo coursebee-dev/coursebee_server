@@ -14,7 +14,7 @@ const validateRegisterInput = require("../validation/studentRegister");
 const validateLoginInput = require("../validation/login");// Load User model
 const LiveClassModel = require("../models/LiveClass")
 const StudentModel = require('../models/Student');
-const { getCourse, getCategories, getMentorName } = require('../controllers/studentcontrollers');
+const { getCourse, getCategories, getMentorName, completeCheckout, getUserInfo, getCourseDetails } = require('../controllers/studentcontrollers');
 
 router.post('/register', async (req, res, next) => {
     const { errors, isValid } = validateRegisterInput(req.body);
@@ -191,5 +191,11 @@ router.get('/get/courses', getCourse)
 router.get('/get/categories', getCategories)
 
 router.get('/get/mentorname/:id', getMentorName)
+
+router.post('/course/checkout', completeCheckout)
+
+router.get('/userinfo/:id', getUserInfo)
+
+router.get('/courseinfo/:courseid', getCourseDetails)
 
 module.exports = router;
