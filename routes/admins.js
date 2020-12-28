@@ -211,8 +211,7 @@ router.put('/video/disapprove/:courseId/:contentId', passport.authenticate('jwtA
 
 router.put('/video/setprice/:id', async (req, res) => {
     try {
-        const data = await CourseModel.updateOne({ _id: req.params.id }, { $set: { price: Number(req.body.price) } })
-        //console.log(data)
+        await CourseModel.updateOne({ _id: req.params.id }, { $set: { price: Number(req.body.price) } })
         res.json({ success: true, message: 'Successfully set price for video' })
     } catch (error) {
         res.json({ success: false, message: error.message })
